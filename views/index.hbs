@@ -1,3 +1,10 @@
 <h1>{{title}}</h1>
-<p>Welcome to {{title}}</p>
-<p>test</p>
+
+  {{!-- This was added just so we can trigger a slack message from the web. it is optional. --}}
+  <br>
+  <br>
+  <form action="/schedule/sendText" method="POST">
+    <label for="content">Content to be sent to Slack</label>
+    <input type="text" name="content" id="content">
+    <button type="submit" style="background-color: rgb(140, 39, 187); color: white;">Send text to Slack! 👀</button>
+  </form>
