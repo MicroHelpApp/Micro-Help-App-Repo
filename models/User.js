@@ -15,11 +15,11 @@ const userSchema = new Schema({
     },
     dateCreated: {
         type: Date,
-        default: Date.now //here maybe we should define the timezone 
+        default: Date.now() //here maybe we should define the timezone 
     },
-    LastScheduledSession: Date,
+    lastScheduledSession: Date,
     numberOfSessions: Number,
-    avgRating: Number, // not sure we should use that. Maybe inside the session we could have the TA rating and the Stident rating
+    avgRating: Number, 
     country: String
 });
 

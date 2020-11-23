@@ -2,7 +2,7 @@ const express = require('express');
 const router  = express.Router();
 const Axios = require('axios');
 
-const sendMessageSlackWebhook = 'https://hooks.slack.com/services/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';
+const sendMessageSlackWebhook = process.env.SLACK_MESSAGE_WEBHOOK;
 
 //functions
 const okMessage = (obj) => {

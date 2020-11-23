@@ -11,6 +11,7 @@ router.get('/', (req, res, next) => {
     User.create({
         username: 'pedro1',
         type: 'student',
+        date: Date.now(), 
 
     });
     HelpSession.create({
