@@ -19,7 +19,7 @@ mainButton.addEventListener('click', () => {
           labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
           datasets: [{
               label: '# of Votes',
-              data: [<%= chartData %>],
+              data: sessionList,
               backgroundColor: [
                   'rgba(255, 99, 132, 0.2)',
                   'rgba(54, 162, 235, 0.2)',
