@@ -24,6 +24,19 @@ router.get('/dashboard', middlewares.loginCheck, (req, res, next) => {
     })
   });
 
+  router.get('/overview', middlewares.loginCheck, (req, res, next) => {
+    // get all the sessions from the database
+    HelpSession.find().populate('student')
+    .populate('teacher')
+    .then(sessions => {
+      // render a books view to display them
+      console.log(sessions)
+      res.render('private/overview', { sessionList: sessions })
+    }).catch(err => {
+      console.log(err);
+    })
+  });
+
   router.get('/sessions', (req, res, next) => {
     // get all the sessions from the database
     HelpSession.find().populate('student')
