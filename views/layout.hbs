@@ -14,19 +14,16 @@
 <body>
   <nav>
     <ul>
-      <li><a href="/index">Home</a></li>
-      <li><a href="/signup">Signup</a></li>
-      <li><a href="/signin">Signin</a></li>
+      <li><a href="/">Home</a></li>
+      <li><a href="/auth/signup">Signup</a></li>
+      <li><a href="/auth/login">Login</a></li>
       {{!-- The below should be hidden unless the user signs in --}}
-      <li><a href="/dashboard">Dashboard</a></li>
+      <li><a href="/private/dashboard">Dashboard</a></li>
     </ul>
   </nav>
 
-
   {{{body}}}
 
-
-
-
+  <script src="/javascripts/script.js"></script>
 </body>
 </html>

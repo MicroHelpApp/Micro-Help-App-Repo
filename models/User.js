@@ -15,7 +15,7 @@ const userSchema = new Schema({
     },
     dateCreated: {
         type: Date,
-        default: Date.now
+        default: Date.now() //here maybe we should define the timezone 
     },
     lastScheduledSession: Date,
     numberOfSessions: Number,
