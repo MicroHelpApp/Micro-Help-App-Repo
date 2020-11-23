@@ -5,7 +5,8 @@ const Schema = mongoose.Schema;
 const helpSessionSchema = new Schema({
     status: {
         type: String,
-        required: true
+        required: true,
+        enum: ['open', 'done']
     },
     type: {
       type: String, 
@@ -27,7 +28,7 @@ const helpSessionSchema = new Schema({
     teacherRating: Number,
     images: Array,
     description: String,
-    slackChannelId: String 
+    slackChannelId: String
 });
 
 const HelpSession = mongoose.model('HelpSession', helpSessionSchema);
