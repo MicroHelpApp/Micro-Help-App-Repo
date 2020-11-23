@@ -6,6 +6,10 @@ const passport = require('passport');
 const User = require('../models/User');
 const HelpSession = require('../models/HelpSession')
 
+const middlewares = require('./middlewares');
+const { loginCkeck } = require('./middlewares');
+
+
 //routes 
 
 router.get('/signup', (req, res, next) => {
