@@ -5,7 +5,8 @@ const Schema = mongoose.Schema;
 const helpSessionSchema = new Schema({
     status: {
         type: String,
-        required: true
+        required: true,
+        enum: ['open', 'done']
     },
     type: {
       type: String, 
@@ -16,7 +17,10 @@ const helpSessionSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User',
     },
-    //Teacher: if we want the teacher id here, we need it to be a different entity collection, no? 
+    teacher: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+    }, //if we want the teacher id here, we need it to be a different entity collection, no? 
     topic: String, //maybe here we should add a enum with the list of accepted values? or maybe we can handle this on slacks side
     sessionStartDate: Date,
     sessionEndDate: Date,
@@ -24,7 +28,7 @@ const helpSessionSchema = new Schema({
     teacherRating: Number,
     images: Array,
     description: String,
-    slackChannelId: String 
+    slackChannelId: String
 });
 
 const HelpSession = mongoose.model('HelpSession', helpSessionSchema);
