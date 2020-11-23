@@ -8,7 +8,7 @@ const userSchema = new Schema({
     googleId: String,
     linkedInId: String,
     githubId: String,
-    FacebookId: String, 
+    facebookId: String, 
     type: {
         type: String,
         enum: ['student', 'teacherAssistant', 'leadTeacher'],
