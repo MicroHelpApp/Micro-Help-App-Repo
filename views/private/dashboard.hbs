@@ -3,5 +3,12 @@
 <li id="initialDisplay">Overview</li>
 <li>Special data</li>
 </ul>
-<canvas id="myChart" width="400" height="400"></canvas>
-<script src="/javascripts/script.js"></script>
+{{#each sessionList}}
+<p>
+    <span>{{status}} {{sessionStartDate}}</span>
+    <span>Student: {{student.slackUserId}} Teacher: {{teacher.slackUserId}}</span>
+</p>
+{{/each}}
+<canvas id="myChart" width="300" height="300"></canvas>
+<script src="/javascripts/script.js">
+</script>

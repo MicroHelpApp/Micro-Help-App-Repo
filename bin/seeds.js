@@ -12,7 +12,8 @@ const now = new Date()
 const seedSessions = [
     {status: "Open",
     type: 'scheduledForNow',
-    Student: 'Bob',
+    student: '5fbbb3976b59fbd5ce2ef85f',
+    teacher: '5fbbb3976b59fbd5ce2ef861',
     topic: "CSS",
     sessionStartDate: Date.now(),
     sessionEndDate: '',
@@ -24,8 +25,9 @@ const seedSessions = [
   },
   {status: "Open",
   type: 'scheduledForNow',
-  Student: 'Tom',
+  student: '5fbbb3f4024e40d61664c8ea',
   topic: "JS Arrays",
+  teacher: '5fbbb3976b59fbd5ce2ef861',
   sessionStartDate: Date.now(),
   sessionEndDate: '',
   userRating: 8,
@@ -36,7 +38,8 @@ const seedSessions = [
 },
 {status: "Closed",
 type: 'scheduledForNow',
-Student: 'Mana',
+student: '5fbbb3f4024e40d61664c8eb',
+teacher: '5fbbb3976b59fbd5ce2ef861',
 topic: "JS Objects",
 sessionStartDate: Date.now(),
 sessionEndDate: '',
@@ -105,11 +108,11 @@ HelpSession.insertMany(seedSessions)
   console.log(err);
 })
 
-User.insertMany(seedUsers)
-.then(data => {
-  console.log(`Success! ${data.length} users added to the collection `);
-  mongoose.connection.close();
-})
-.catch(err => {
-  console.log(err);
-})
+// User.insertMany(seedUsers)
+// .then(data => {
+//   console.log(`Success! ${data.length} users added to the collection `);
+//   mongoose.connection.close();
+// })
+// .catch(err => {
+//   console.log(err);
+// })

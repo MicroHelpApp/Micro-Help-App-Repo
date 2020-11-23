@@ -13,7 +13,9 @@ router.get('/', middlewares.loginCheck, (req, res) => {
 
 router.get('/dashboard', middlewares.loginCheck, (req, res, next) => {
     // get all the sessions from the database
-    HelpSession.find().then(sessions => {
+    HelpSession.find().populate('student')
+    .populate('teacher')
+    .then(sessions => {
       // render a books view to display them
       console.log(sessions)
       res.render('private/dashboard', { sessionList: sessions })
@@ -22,6 +24,17 @@ router.get('/dashboard', middlewares.loginCheck, (req, res, next) => {
     })
   });
 
-
+  router.get('/sessions', (req, res, next) => {
+    // get all the sessions from the database
+    HelpSession.find().populate('student')
+    .populate('teacher')
+    .then(sessions => {
+      // render a books view to display them
+      console.log(sessions)
+      res.json( {sessions})
+    }).catch(err => {
+      console.log(err);
+    })
+  });
 
 module.exports = router;
