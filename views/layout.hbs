@@ -6,15 +6,19 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>{{title}}</title>
   <link rel="stylesheet" href="/stylesheets/style.css" />
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+  
+
 </head>
 <body>
   <nav>
     <ul>
-      <li><a href="/index"></a>Home</li>
-      <li><a href="/signup"></a>Signup</li>
-      <li><a href="/signin"></a>Signin</li>
+      <li><a href="/index">Home</a></li>
+      <li><a href="/signup">Signup</a></li>
+      <li><a href="/signin">Signin</a></li>
       {{!-- The below should be hidden unless the user signs in --}}
-      <li><a href="/dashboard"></a>Dashboard</li>
+      <li><a href="/dashboard">Dashboard</a></li>
     </ul>
   </nav>
 
@@ -23,6 +27,6 @@
 
 
 
-  <script src="/javascripts/script.js"></script>
+
 </body>
 </html>

@@ -8,18 +8,18 @@ const userSchema = new Schema({
     googleId: String,
     linkedInId: String,
     githubId: String,
-    FacebookId: String, 
+    facebookId: String, 
     type: {
         type: String,
         enum: ['student', 'teacherAssistant', 'leadTeacher'],
     },
     dateCreated: {
         type: Date,
-        default: Date.now //here maybe we should define the timezone 
+        default: Date.now
     },
-    LastScheduledSession: Date,
+    lastScheduledSession: Date,
     numberOfSessions: Number,
-    avgRating: Number, // not sure we should use that. Maybe inside the session we could have the TA rating and the Stident rating
+    avgRating: Number, 
     country: String
 });
 
