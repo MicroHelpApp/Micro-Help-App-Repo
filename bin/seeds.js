@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const HelpSession = require('../models/HelpSession');
 const User = require('../models/User');
 
-mongoose.connect('mongodb://localhost/helpSessions',{
+mongoose.connect('mongodb://localhost/micro-help-app-repo',{
   useNewUrlParser: true
 });
 
