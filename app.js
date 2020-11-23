@@ -51,6 +51,69 @@ app.locals.title = 'Express - Generated with IronGenerator';
 
 
 
+//express-session
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    cookie: { maxAge: 24 * 60 * 60 * 1000 },
+    saveUninitialized: false,
+    resave: false,
+    store: new MongoStore({
+      mongooseConnection: mongoose.connection,
+      ttl: 24 * 60 * 60 * 1000
+    })
+  })
+);
+
+//passport configuration
+
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const User = require('./models/User');
+const bcrypt = require('bcrypt');
+
+passport.serializeUser((user, done) => {
+  done(null, user._id);
+});
+
+passport.deserializeUser((id, done) => {
+  User.findById(id)
+    .then(dbUser => {
+      done(null, dbUser);
+    })
+    .catch(err => {
+      done(err);
+    });
+});
+
+passport.use(
+  new LocalStrategy((username, password, done) => {
+    User.findOne({ username: username })
+      .then(found => {
+        if (found === null) {
+          done(null, false, { message: 'Wrong credentials' });
+        } else if (!bcrypt.compareSync(password, found.password)) {
+          done(null, false, { message: 'Wrong credentials' });
+        } else {
+          done(null, found);
+        }
+      })
+      .catch(err => {
+        done(err, false);
+      });
+  })
+);
+
+
+
+
+
+
+
+
 const index = require('./routes/index');
 app.use('/', index);
 
