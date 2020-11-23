@@ -12,6 +12,17 @@ router.get('/signup', (req, res, next) => {
    res.render('auth/signup')
 });
 
+router.get('/login', (req, res, next) => {
+    res.render('auth/login')
+ });
+
+router.post('/login', passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/login',
+    passReqToCallback: true
+})
+);
+
 router.post('/signup', (req, res, next) => {
     const { username, password } = req.body;
     if (password.length < 8) {
@@ -50,8 +61,8 @@ router.post('/signup', (req, res, next) => {
             }
           });
     }
-
-   
   });
+
+
 
 module.exports = router;
