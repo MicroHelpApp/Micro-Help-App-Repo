@@ -15,7 +15,7 @@ router.get('/dashboard', (req, res, next) => {
     HelpSession.find().then(sessions => {
       // render a books view to display them
       console.log(sessions)
-      res.render('dashboard', { sessionList: sessions })
+      res.render('dashboard', { chartData: sessions })
     }).catch(err => {
       console.log(err);
     })
@@ -23,3 +23,5 @@ router.get('/dashboard', (req, res, next) => {
 
 
 module.exports = router;
+
+

@@ -16,7 +16,10 @@ const helpSessionSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User',
     },
-    //Teacher: if we want the teacher id here, we need it to be a different entity collection, no? 
+    teacher: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+    }, //if we want the teacher id here, we need it to be a different entity collection, no? 
     topic: String, //maybe here we should add a enum with the list of accepted values? or maybe we can handle this on slacks side
     sessionStartDate: Date,
     sessionEndDate: Date,
