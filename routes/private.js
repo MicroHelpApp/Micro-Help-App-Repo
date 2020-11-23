@@ -8,7 +8,7 @@ const middlewares = require('./middlewares');
 
 //routes 
 router.get('/', middlewares.loginCheck, (req, res) => {
-    res.render('private/dashboard')
+    res.render('private/mainpage')
 })
 
 

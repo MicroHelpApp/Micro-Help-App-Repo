@@ -114,11 +114,6 @@ app.use(passport.session());
 
 
 
-
-
-
-
-
 const index = require('./routes/index');
 app.use('/', index);
 
