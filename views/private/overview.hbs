@@ -2,7 +2,7 @@
 <table>
     <thead>
         <tr>
-            <th colspan="2">Open schedul</th>
+            <th colspan="2">Current schedule</th>
         </tr>
     </thead>
     <tbody>
@@ -11,12 +11,13 @@
             <td>Status</td>
             <td>Student</td>
             <td>Assigned TA</td>
+            <td>Issue</td>
             {{!-- add time started --}}
             {{!-- add time completed --}}
-            <td>Help requested</td>  
+            <td>Help requested</td>
+            <td>Session resolved</td>
+            <td>Action</td>  
         </tr>
-
-
 
         {{#each sessionList}}
         <tr>
@@ -25,7 +26,10 @@
             <td>{{teacher.username}}</td>
             {{!-- add time started --}}
             {{!-- add time completed --}}
-            <td>{{description}}</td>  
+            <td>{{description}}</td>
+            <td>{{sessionStartDate}}</td>
+            <td>{{sessionEndDate}}</td>
+            <td><a href="/private/close/{{_id}}">Close session</a></td>
         </tr>
     {{/each}}
     </tbody>
