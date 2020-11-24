@@ -30,7 +30,17 @@ router.get('/dashboard', middlewares.loginCheck, (req, res, next) => {
     .populate('teacher')
     .then(sessions => {
       // render a books view to display them
-      console.log(sessions)
+      
+      // sessions.sessionStartDate = 14/07/2020
+      sessions.forEach( (sess)=>{
+        console.log(sess);
+        sess.description = sess.sessionStartDate.toString().split(' ')[4]
+      // sess[hours] = sess.sessionStartDate.toString().split(' ')[4]
+      // sess.sessionStartDate = sess.sessionStartDate
+      })
+      // sessions.sessionStartDate.getHours() + ":" + sessions.sessionStartDate.getMinutes() + ":" + sessions.sessionStartDate.getSeconds();
+      // console.log(sessions)
+      // console.log(sessions)
       res.render('private/overview', { sessionList: sessions })
     }).catch(err => {
       console.log(err);
@@ -43,6 +53,7 @@ router.get('/dashboard', middlewares.loginCheck, (req, res, next) => {
     .populate('teacher')
     .then(sessions => {
       // render a books view to display them
+      
       console.log(sessions)
       res.json( {sessions})
     }).catch(err => {
