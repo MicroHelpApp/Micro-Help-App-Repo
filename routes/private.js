@@ -33,11 +33,14 @@ router.get('/dashboard', middlewares.loginCheck, (req, res, next) => {
       
       // sessions.sessionStartDate = 14/07/2020
       sessions.forEach( (sess)=>{
-      sess.sessionStartDate = sess.sessionStartDate.getHours()
+        console.log(sess);
+        sess.description = sess.sessionStartDate.toString().split(' ')[4]
+      // sess[hours] = sess.sessionStartDate.toString().split(' ')[4]
+      // sess.sessionStartDate = sess.sessionStartDate
       })
       // sessions.sessionStartDate.getHours() + ":" + sessions.sessionStartDate.getMinutes() + ":" + sessions.sessionStartDate.getSeconds();
       // console.log(sessions)
-      console.log(sessions[0].sessionStartDate)
+      // console.log(sessions)
       res.render('private/overview', { sessionList: sessions })
     }).catch(err => {
       console.log(err);
