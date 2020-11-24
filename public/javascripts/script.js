@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 }, false);
 
+
 // this displays the charts
 mainButton.addEventListener('click', () => {
 
