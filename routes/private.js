@@ -6,6 +6,8 @@ const HelpSession = require('../models/HelpSession')
 
 const middlewares = require('./middlewares');
 
+const schedule = require('./schedule')
+
 //routes 
 router.get('/', middlewares.loginCheck, (req, res) => {
     res.render('private/mainpage')
@@ -66,25 +68,18 @@ router.get('/dashboard', middlewares.loginCheck, (req, res, next) => {
     let id = req.params.id
     HelpSession.findById(id)
     .then(data => {
+      let helpSessionObj = data
+      
       // if the session is open, close it
-      if (data.status == 'Open'){
-        HelpSession.findByIdAndUpdate(id, {status: 'Closed', sessionEndDate: new Date()} )
-        .then(res => console.log(res))
-        .then(() => {
-          HelpSession.find().populate('student')
-            .populate('teacher')
-            .then(sessions => {
-          //     console.log(sessions)
-              res.render('private/overview', { sessionList: sessions })
-        })})
+      if (data.status == 'open'){ 
+        HelpSession.findByIdAndUpdate(data._id, {status: 'done', sessionEndDate: Date.now()} ) 
+        .then(data => {
+          schedule.sendRatingMessage(helpSessionObj)    
+          res.redirect('/private/overview')
+        })
       }
        else {
-          HelpSession.find().populate('student')
-            .populate('teacher')
-            .then(sessions => {
-          //     console.log(sessions)
-              res.render('private/overview', { sessionList: sessions })
-        })
+        res.redirect('/private/overview')
       }
     })
     .catch(err => {
@@ -94,3 +89,4 @@ router.get('/dashboard', middlewares.loginCheck, (req, res, next) => {
 
 
 module.exports = router;
+

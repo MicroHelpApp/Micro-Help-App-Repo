@@ -110,7 +110,7 @@ const okMessage = (username, channelId) => {
     .catch( err => console.log(err))
 }
 
-const ratingBlock = (content) => {
+const ratingBlock = () => {
 
   return [
       {
@@ -237,6 +237,19 @@ const updateSlackTs = (helpSessionId, payload) => {
   .catch(err => console.log(err))
 }
 
+const sendRatingMessage = (helpSession) => {
+  Slack.chat.postMessage({
+    token: token, 
+    channel: helpSession.slackChannelId, 
+    text: 'test text',
+    blocks: ratingBlock()
+  })
+  .then( payload => {
+    updateSlackTs(helpSession._id, payload) 
+  })
+  .catch( err => console.log(err))
+}
+
 //routes 
 router.get('/', (req, res, next) => {
   console.log('SCHEDULE IS TRIGGERED')
@@ -263,20 +276,19 @@ router.post('/', (req, res, next) => {
 
 // This is a form added just so we can trigger a slack message from the web. it is optional.
 router.post('/sendText', (req, res, next) => {
-
   Slack.chat.postMessage({
     token: token, 
     channel: 'C01EQM56FQF', // slackChannelId
     text: 'test text',
-    blocks: ratingBlock(req.body.content)
+    blocks: ratingBlock()
   })
   .then( payload => {
-    updateSlackTs('5fbd2177b71faa1e83b21bac', payload) // slackMessage_Ts 
-    
+    updateSlackTs('5fbd2da605778826baa76ad6', payload) // slackMessage_Ts 
     res.redirect('/')
   })
   .catch( err => console.log(err))
 });
 
-
 module.exports = router;
+
+module.exports.sendRatingMessage = sendRatingMessage
