@@ -20,7 +20,7 @@ const userSchema = new Schema({
     lastScheduledSession: Date,
     numberOfSessions: Number,
     avgRating: Number, 
-    country: String
+    country: String,
 });
 
 const User = mongoose.model('User', userSchema);

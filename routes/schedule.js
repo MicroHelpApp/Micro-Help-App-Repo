@@ -2,14 +2,102 @@ const express = require('express');
 const router  = express.Router();
 const Axios = require('axios');
 
-const sendMessageSlackWebhook = process.env.SLACK_MESSAGE_WEBHOOK;
-
 // npm slack setup
 const token = process.env.SLACK_BOT_TOKEN;
 const Slack = require('slack');
 const User = require('../models/User');
 const HelpSession = require('../models/HelpSession');
 const bot = new Slack({token});
+
+//variables
+const sendMessageSlackWebhook = process.env.SLACK_MESSAGE_WEBHOOK
+
+const ratingMessage = {
+  "blocks": [
+    {
+      "type": "section",
+      "fields": [
+        {
+          "type": "mrkdwn",
+          "text": "*Type:*\nASAP"
+        },
+        {
+          "type": "mrkdwn",
+          "text": "*When:*\nSubmitted Mar 10, 2020 10:23"
+        },
+        {
+          "type": "mrkdwn",
+          "text": "*Last Update:*\nMar 10, 2020 10:45"
+        },
+        {
+          "type": "mrkdwn",
+          "text": "*Topic:*\nlab-spotify."
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "*How was your session with the TA?*\nselect one of the below options to rate the session :) "
+      }
+    },
+    {
+      "type": "actions",
+      "elements": [
+        {
+          "type": "button",
+          "text": {
+            "type": "plain_text",
+            "emoji": true,
+            "text": "Very good!"
+          },
+          "style": "primary",
+          "value": "very_good"
+        },
+        {
+          "type": "button",
+          "text": {
+            "type": "plain_text",
+            "emoji": true,
+            "text": "good"
+          },
+          "style": "primary",
+          "value": "good"
+        },
+        {
+          "type": "button",
+          "text": {
+            "type": "plain_text",
+            "emoji": true,
+            "text": "meh..."
+          },
+          "value": "meh"
+        },
+        {
+          "type": "button",
+          "text": {
+            "type": "plain_text",
+            "emoji": true,
+            "text": "bad"
+          },
+          "value": "bad"
+        },
+        {
+          "type": "button",
+          "text": {
+            "type": "plain_text",
+            "emoji": true,
+            "text": "Very bad! "
+          },
+          "style": "danger",
+          "value": "very_bad"
+        }
+      ]
+    }
+  ]
+}
+
 
 //functions
 const okMessage = (username, channelId) => {
@@ -22,9 +110,9 @@ const okMessage = (username, channelId) => {
     .catch( err => console.log(err))
 }
 
-const block1 = (content) => {
-  return {
-    "blocks": [
+const ratingBlock = (content) => {
+
+  return [
       {
         "type": "section",
         "fields": [
@@ -108,7 +196,7 @@ const block1 = (content) => {
       }
     ]
   }
-}
+
 
 const createUserFromSlack = (name, slackUserId) => {
   return User.create({
@@ -135,6 +223,20 @@ const createHelpSession = (user, channelId) => {
   .catch(err => console.log(err))
 }
 
+const updateSlackTs = (helpSessionId, payload) => {
+
+  HelpSession
+  .findByIdAndUpdate(
+    helpSessionId, 
+    {
+      slackMessage_Ts: payload.ts
+  })
+  .then(data => {
+    console.log(data)
+  }) 
+  .catch(err => console.log(err))
+}
+
 //routes 
 router.get('/', (req, res, next) => {
   console.log('SCHEDULE IS TRIGGERED')
@@ -145,6 +247,7 @@ router.post('/', (req, res, next) => {
   User.find({slackUserId: req.body.user_id})
   .then( data => {
     if (data.length !== 0) {
+      
       createHelpSession(data, req.body.channel_id)
     } else {
       createUserFromSlack(req.body.user_name, req.body.user_id)
@@ -160,16 +263,16 @@ router.post('/', (req, res, next) => {
 
 // This is a form added just so we can trigger a slack message from the web. it is optional.
 router.post('/sendText', (req, res, next) => {
-    Axios
-    .post(sendMessageSlackWebhook, 
 
-      block1(req.body.content)
-
-    //{text: `${req.body.content}`}
+  Slack.chat.postMessage({
+    token: token, 
+    channel: 'C01EQM56FQF', // slackChannelId
+    text: 'test text',
+    blocks: ratingBlock(req.body.content)
+  })
+  .then( payload => {
+    updateSlackTs('5fbd2177b71faa1e83b21bac', payload) // slackMessage_Ts 
     
-    )
-  .then( data => {
-    console.log(data, 'it worked'),
     res.redirect('/')
   })
   .catch( err => console.log(err))

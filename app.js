@@ -126,5 +126,8 @@ app.use('/auth', auth)
 const private = require('./routes/private')
 app.use('/private', private)
 
+const interactivity = require('./routes/interactivity')
+app.use('/interactivity', interactivity)
+
 
 module.exports = app;
