@@ -1,22 +1,22 @@
 
-<table>
-    <thead>
+<table class="table">
+    <thead class="thead-dark">
         <tr>
-            <th colspan="2">Current schedule</th>
+            <th scope="col">Status</td>
+            <th scope="col">Student</td>
+            <th scope="col">Assigned TA</td>
+            <th scope="col">Issue</td>
+            {{!-- add time started --}}
+            {{!-- add time completed --}}
+            <th scope="col">Help requested</td>
+            <th scope="col">Session resolved</td>
+            <th scope="col">Action</td>  
         </tr>
     </thead>
     <tbody>
         {{!-- add a table row for each session that is open in the last 2 hours --}}
         <tr>
-            <td>Status</td>
-            <td>Student</td>
-            <td>Assigned TA</td>
-            <td>Issue</td>
-            {{!-- add time started --}}
-            {{!-- add time completed --}}
-            <td>Help requested</td>
-            <td>Session resolved</td>
-            <td>Action</td>  
+
         </tr>
 
         {{#each sessionList}}

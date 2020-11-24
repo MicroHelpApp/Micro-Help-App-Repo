@@ -61,17 +61,36 @@ router.get('/dashboard', middlewares.loginCheck, (req, res, next) => {
   });
 
   router.get('/close/:id', middlewares.loginCheck, (req, res, next) => {
-    // get all the sessions from the database
-    // console.log('test')
-    HelpSession.findByIdAndUpdate(req.params.id, {status: 'Closed', sessionEndDate: new Date()} )
-    .then(()=> {
-    HelpSession.find().populate('student')
-    .populate('teacher')
-    .then(sessions => {
-      res.render('private/overview', { sessionList: sessions })
-    }).catch(err => {
+    // console.log(req.params.id)
+//Bring me the information on the clicked button
+    let id = req.params.id
+    HelpSession.findById(id)
+    .then(data => {
+      // if the session is open, close it
+      if (data.status == 'Open'){
+        HelpSession.findByIdAndUpdate(id, {status: 'Closed', sessionEndDate: new Date()} )
+        .then(res => console.log(res))
+        .then(() => {
+          HelpSession.find().populate('student')
+            .populate('teacher')
+            .then(sessions => {
+          //     console.log(sessions)
+              res.render('private/overview', { sessionList: sessions })
+        })})
+      }
+       else {
+          HelpSession.find().populate('student')
+            .populate('teacher')
+            .then(sessions => {
+          //     console.log(sessions)
+              res.render('private/overview', { sessionList: sessions })
+        })
+      }
+    })
+    .catch(err => {
       console.log(err);
     })
   })
-});
+
+
 module.exports = router;
