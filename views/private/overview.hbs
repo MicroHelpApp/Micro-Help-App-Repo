@@ -21,7 +21,7 @@
 
         {{#each sessionList}}
         <tr>
-            <td>{{status}}</td>
+            <td class="{{status}}">{{status}}</td>
             <td>{{student.username}}</td>
             <td>{{teacher.username}}</td>
             {{!-- add time started --}}
@@ -34,4 +34,4 @@
     {{/each}}
     </tbody>
 </table>
-
+<script src="/javascripts/script.js"></script>
