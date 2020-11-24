@@ -13,20 +13,13 @@ const bot = new Slack({token});
 
 //functions
 const okMessage = (username, channelId) => {
-    Axios
-      .post( sendMessageSlackWebhook, 
-      {text: `Hey ${username}, your session has been scheduled! the channel Id is ${channelId} 🧠`,
+    Slack.chat.postMessage({
+      token: token, 
+      channel: channelId,
+      text: `the user name is ${username}`
     })
-    .then(data => console.log('message sent'))
-    .catch(err => console.log(err))
-
-    // Slack.chat.postMessage({
-    //   token: token, 
-    //   channel: "C01EQM56FQF",
-    //   text: "test text"
-    // })
-    // .then( data => console.log(data))
-    // .catch( err => console.log(err))
+    .then( data => console.log(`message sent`))
+    .catch( err => console.log(err))
 }
 
 const block1 = (content) => {
@@ -117,6 +110,31 @@ const block1 = (content) => {
   }
 }
 
+const createUserFromSlack = (name, slackUserId) => {
+  return User.create({
+    username: name, 
+    slackUserId: slackUserId, 
+    type: 'student',
+  })
+}
+
+const createHelpSession = (user, channelId) => {
+  //console.log(user)
+  //console.log(user)
+  //console.log(user[0]._id)
+  return HelpSession.create({
+    status: 'open',
+    type: 'scheduledForNow',
+    student: user._id || user[0]._id,
+    sessionStartDate: Date.now(),
+    slackChannelId: channelId
+  })
+  .then(data => {
+    okMessage(user.username || user[0].username, channelId)
+  })
+  .catch(err => console.log(err))
+}
+
 //routes 
 router.get('/', (req, res, next) => {
   console.log('SCHEDULE IS TRIGGERED')
@@ -127,45 +145,18 @@ router.post('/', (req, res, next) => {
   User.find({slackUserId: req.body.user_id})
   .then( data => {
     if (data.length !== 0) {
-      console.log(data)
+      createHelpSession(data, req.body.channel_id)
     } else {
-      User.create({
-        username: req.body.user_name, 
-        slackUserId: req.body.user_id, 
-        type: 'student',
-      })
-      .then(data => {
-        HelpSession.create({
-          status: 'open',
-          type: 'scheduledForNow',
-          student: data._id,
-          // teacher: {
-          //     type: Schema.Types.ObjectId,
-          //     ref: 'User',
-          // }, //if we want the teacher id here, we need it to be a different entity collection, no? 
-          // topic: String, //maybe here we should add a enum with the list of accepted values? or maybe we can handle this on slacks side
-          sessionStartDate: Date.now(),
-          // sessionEndDate: Date,
-          // userRating: Number,
-          // teacherRating: Number,
-          // images: Array,
-          // description: String,
-          slackChannelId: req.body.channel_id
-        })
-        .then(data => {
-          okMessage(req.body.user_name, data.slackChannelId)
-        })
-        .catch(err => console.log(err))
+      createUserFromSlack(req.body.user_name, req.body.user_id)
+      .then(data => { 
+        createHelpSession(data, req.body.channel_id)
       })
     }
   })
   .catch(err => console.log(err))
-
-
-    
   res.sendStatus(200)
-
   });
+
 
 // This is a form added just so we can trigger a slack message from the web. it is optional.
 router.post('/sendText', (req, res, next) => {
@@ -183,9 +174,6 @@ router.post('/sendText', (req, res, next) => {
   })
   .catch( err => console.log(err))
 });
-
-
-
 
 
 module.exports = router;
