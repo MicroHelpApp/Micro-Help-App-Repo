@@ -1,0 +1,33 @@
+
+<table>
+    <thead>
+        <tr>
+            <th colspan="2">Open schedul</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{!-- add a table row for each session that is open in the last 2 hours --}}
+        <tr>
+            <td>Status</td>
+            <td>Student</td>
+            <td>Assigned TA</td>
+            {{!-- add time started --}}
+            {{!-- add time completed --}}
+            <td>Help requested</td>  
+        </tr>
+
+
+
+        {{#each sessionList}}
+        <tr>
+            <td>{{status}}</td>
+            <td>{{student.username}}</td>
+            <td>{{teacher.username}}</td>
+            {{!-- add time started --}}
+            {{!-- add time completed --}}
+            <td>{{sessionStartDate}}</td>  
+        </tr>
+    {{/each}}
+    </tbody>
+</table>
+
