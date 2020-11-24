@@ -28,7 +28,9 @@ const helpSessionSchema = new Schema({
     teacherRating: Number,
     images: Array,
     description: String,
-    slackChannelId: String
+    slackChannelId: String,
+    slackMessage_Ts: String,
+    userRating_text: String
 });
 
 const HelpSession = mongoose.model('HelpSession', helpSessionSchema);
