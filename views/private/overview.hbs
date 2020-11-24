@@ -1,22 +1,23 @@
 
-<table>
-    <thead>
+<table class="table">
+    <thead class="thead-dark">
         <tr>
-            <th colspan="2">Open schedul</th>
+            <th scope="col">Status</td>
+            <th scope="col">Student</td>
+            <th scope="col">Assigned TA</td>
+            <th scope="col">Issue</td>
+            {{!-- add time started --}}
+            {{!-- add time completed --}}
+            <th scope="col">Help requested</td>
+            <th scope="col">Session resolved</td>
+            <th scope="col">Action</td>  
         </tr>
     </thead>
     <tbody>
         {{!-- add a table row for each session that is open in the last 2 hours --}}
         <tr>
-            <td>Status</td>
-            <td>Student</td>
-            <td>Assigned TA</td>
-            {{!-- add time started --}}
-            {{!-- add time completed --}}
-            <td>Help requested</td>  
+
         </tr>
-
-
 
         {{#each sessionList}}
         <tr>
@@ -25,7 +26,10 @@
             <td>{{teacher.username}}</td>
             {{!-- add time started --}}
             {{!-- add time completed --}}
-            <td>{{description}}</td>  
+            <td>{{description}}</td>
+            <td>{{sessionStartDate}}</td>
+            <td>{{sessionEndDate}}</td>
+            <td><a href="/private/close/{{_id}}">Close session</a></td>
         </tr>
     {{/each}}
     </tbody>
