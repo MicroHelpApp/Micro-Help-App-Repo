@@ -17,6 +17,7 @@ const helpSessionSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User',
     },
+    studentSlackId: String,
     teacher: {
         type: Schema.Types.ObjectId,
         ref: 'User',
@@ -33,7 +34,8 @@ const helpSessionSchema = new Schema({
     description: String,
     slackChannelId: String,
     slackMessage_Ts: String,
-    userRating_text: String
+    userRating_text: String, //this can be removed 
+    slackUserRealName: String
 });
 
 const HelpSession = mongoose.model('HelpSession', helpSessionSchema);

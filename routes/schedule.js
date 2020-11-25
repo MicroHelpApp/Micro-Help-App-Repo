@@ -9,108 +9,23 @@ const User = require('../models/User');
 const HelpSession = require('../models/HelpSession');
 const bot = new Slack({token});
 
+
 //variables
 const sendMessageSlackWebhook = process.env.SLACK_MESSAGE_WEBHOOK
 
-const ratingMessage = {
-  "blocks": [
-    {
-      "type": "section",
-      "fields": [
-        {
-          "type": "mrkdwn",
-          "text": "*Type:*\nASAP"
-        },
-        {
-          "type": "mrkdwn",
-          "text": "*When:*\nSubmitted Mar 10, 2020 10:23"
-        },
-        {
-          "type": "mrkdwn",
-          "text": "*Last Update:*\nMar 10, 2020 10:45"
-        },
-        {
-          "type": "mrkdwn",
-          "text": "*Topic:*\nlab-spotify."
-        }
-      ]
-    },
-    {
-      "type": "section",
-      "text": {
-        "type": "mrkdwn",
-        "text": "*How was your session with the TA?*\nselect one of the below options to rate the session :) "
-      }
-    },
-    {
-      "type": "actions",
-      "elements": [
-        {
-          "type": "button",
-          "text": {
-            "type": "plain_text",
-            "emoji": true,
-            "text": "Very good!"
-          },
-          "style": "primary",
-          "value": "very_good"
-        },
-        {
-          "type": "button",
-          "text": {
-            "type": "plain_text",
-            "emoji": true,
-            "text": "good"
-          },
-          "style": "primary",
-          "value": "good"
-        },
-        {
-          "type": "button",
-          "text": {
-            "type": "plain_text",
-            "emoji": true,
-            "text": "meh..."
-          },
-          "value": "meh"
-        },
-        {
-          "type": "button",
-          "text": {
-            "type": "plain_text",
-            "emoji": true,
-            "text": "bad"
-          },
-          "value": "bad"
-        },
-        {
-          "type": "button",
-          "text": {
-            "type": "plain_text",
-            "emoji": true,
-            "text": "Very bad! "
-          },
-          "style": "danger",
-          "value": "very_bad"
-        }
-      ]
-    }
-  ]
-}
-
 
 //functions
-const okMessage = (username, channelId) => {
+const okMessage = (username, channelId) => { //this is no longer being used. 
     Slack.chat.postMessage({
       token: token, 
       channel: channelId,
       text: `the user name is ${username}`
     })
-    .then( data => console.log(`message sent`))
+    .then( data => console.log(`okMessage() called and sent`))
     .catch( err => console.log(err))
 }
 
-const ratingBlock = () => {
+const newRatingBlock = (helpSession) => {
 
   return [
       {
@@ -118,19 +33,19 @@ const ratingBlock = () => {
         "fields": [
           {
             "type": "mrkdwn",
-            "text": "*Type:*\nASAP"
+            "text": `*Type:*\n${helpSession.type}`
           },
           {
             "type": "mrkdwn",
-            "text": "*When:*\nSubmitted Mar 10, 2020 10:23"
+            "text": `*Date Created:*\n${helpSession.sessionStartDate}`
           },
           {
             "type": "mrkdwn",
-            "text": "*Last Update:*\nMar 10, 2020 10:45"
+            "text": `*Date Completed:*\n${helpSession.sessionEndDate}`
           },
           {
             "type": "mrkdwn",
-            "text": "*Topic:*\nlab-spotify."
+            "text": `*Status:*\n${helpSession.status}` 
           }
         ]
       },
@@ -149,76 +64,106 @@ const ratingBlock = () => {
             "text": {
               "type": "plain_text",
               "emoji": true,
-              "text": "Very good!"
+              "text": "Very good! 5️⃣"
             },
             "style": "primary",
-            "value": "very_good"
+            "value": "5"
           },
           {
             "type": "button",
             "text": {
               "type": "plain_text",
               "emoji": true,
-              "text": "good"
+              "text": "good 4️⃣"
             },
             "style": "primary",
-            "value": "good"
+            "value": "4"
           },
           {
             "type": "button",
             "text": {
               "type": "plain_text",
               "emoji": true,
-              "text": "meh..."
+              "text": "meh... 3️⃣"
             },
-            "value": "meh"
+            "value": "3"
           },
           {
             "type": "button",
             "text": {
               "type": "plain_text",
               "emoji": true,
-              "text": "bad"
-            },
-            "value": "bad"
-          },
-          {
-            "type": "button",
-            "text": {
-              "type": "plain_text",
-              "emoji": true,
-              "text": "Very bad! "
+              "text": "bad 2️⃣"
             },
             "style": "danger",
-            "value": "very_bad"
+            "value": "2"
+          },
+          {
+            "type": "button",
+            "text": {
+              "type": "plain_text",
+              "emoji": true,
+              "text": "Very bad! 1️⃣"
+            },
+            "style": "danger",
+            "value": "1"
           }
         ]
       }
     ]
-  }
+}
 
+const createUserFromSlack = (slackUserId) => {
 
-const createUserFromSlack = (name, slackUserId) => {
-  return User.create({
-    username: name, 
-    slackUserId: slackUserId, 
-    type: 'student',
+  return Slack.users.info({
+    token: token,
+    user: slackUserId
   })
+  .then(data => {
+    return User.create({
+      username: data.user.name, 
+      slackUserId: slackUserId, 
+      type: 'student',
+      slackUserRealName: data.user.real_name 
+    })
+  })
+  .catch(err => console.log(err))
+
+  
 }
 
 const createHelpSession = (user, channelId) => {
-  //console.log(user)
-  //console.log(user)
-  //console.log(user[0]._id)
+  console.log(user)
   return HelpSession.create({
-    status: 'open',
+    status: 'Open',
     type: 'scheduledForNow',
     student: user._id || user[0]._id,
-    sessionStartDate: Date.now(),
-    slackChannelId: channelId
+    sessionStartDate: new Date(),
+    slackChannelId: channelId,
+    studentSlackId: user.slackUserId || user[0].slackUserId,
+    slackUserRealName: user.slackUserRealName || user[0].slackUserRealName
   })
   .then(data => {
-    okMessage(user.username || user[0].username, channelId)
+    //okMessage(user.username || user[0].username, channelId) This has been substituted by the below implementation
+    HelpSession.find({
+      status: 'Open'
+    })
+    .then(arr => {
+      console.log(arr)
+      return buildScheduleListForSlack(user, arr)
+    }).then(str => {
+      console.log(str)
+      Slack.chat.postMessage({
+        token: token, 
+        channel: channelId, // slackChannelId
+        text: str
+      })
+      .then( payload => {
+        console.log('str was sent')
+      })
+      .catch( err => console.log(err))
+    })
+
   })
   .catch(err => console.log(err))
 }
@@ -237,18 +182,46 @@ const updateSlackTs = (helpSessionId, payload) => {
   .catch(err => console.log(err))
 }
 
-const sendRatingMessage = (helpSession) => {
-  Slack.chat.postMessage({
+const sendUserDirectMessage = (helpSession) => { //fist we must open a conversation
+  Slack.conversations.open({
     token: token, 
-    channel: helpSession.slackChannelId, 
-    text: 'test text',
-    blocks: ratingBlock()
+    users: helpSession.studentSlackId,
   })
   .then( payload => {
-    updateSlackTs(helpSession._id, payload) 
+    sendRatingMessage(payload, helpSession)
   })
   .catch( err => console.log(err))
 }
+
+const sendRatingMessage = (payload, helpSession) => { //then we can send the message 
+  
+  HelpSession.findById(helpSession._id)
+  .then( helpSessionFound => {
+    Slack.chat.postMessage({
+      token: token, 
+      channel: payload.channel.id, 
+      text: 'Rate your last help session!',
+      blocks: newRatingBlock(helpSessionFound)
+    })
+    .then( data => {
+      updateSlackTs(helpSession._id, data) 
+    })
+    .catch( err => console.log(err))
+
+  })
+  .catch( err => console.log(err))
+  
+}
+
+const buildScheduleListForSlack = (user, arr) => {
+  let str = `*Hey ${user.username || user[0].username}, your help session in on its way! 🧠 *\n\nThe current waiting list is:\n`;
+
+  for (let i = 0; i < arr.length; i++) {
+    str += `\n ${i+1}. ${arr[i].slackUserRealName}`
+  }
+  return str
+}
+  
 
 //routes 
 router.get('/', (req, res, next) => {
@@ -257,13 +230,15 @@ router.get('/', (req, res, next) => {
 
 router.post('/', (req, res, next) => {
 
+  //console.log(req.body)
+
   User.find({slackUserId: req.body.user_id})
   .then( data => {
     if (data.length !== 0) {
       
       createHelpSession(data, req.body.channel_id)
     } else {
-      createUserFromSlack(req.body.user_name, req.body.user_id)
+      createUserFromSlack(req.body.user_id)
       .then(data => { 
         createHelpSession(data, req.body.channel_id)
       })
@@ -276,19 +251,34 @@ router.post('/', (req, res, next) => {
 
 // This is a form added just so we can trigger a slack message from the web. it is optional.
 router.post('/sendText', (req, res, next) => {
+
   Slack.chat.postMessage({
-    token: token, 
-    channel: 'C01EQM56FQF', // slackChannelId
-    text: 'test text',
-    blocks: ratingBlock()
-  })
-  .then( payload => {
-    updateSlackTs('5fbd2da605778826baa76ad6', payload) // slackMessage_Ts 
-    res.redirect('/')
-  })
-  .catch( err => console.log(err))
+      token: token, 
+      channel: 'C01EQM56FQF', // slackChannelId
+      text: buildScheduleListForSlack()
+    })
+    .then( payload => {
+      res.redirect('/')
+    })
+    .catch( err => console.log(err))
+
+
+  
+  // Slack.chat.postMessage({
+  //   token: token, 
+  //   channel: 'C01EQM56FQF', // slackChannelId
+  //   text: 'test text',
+  //   blocks: ratingBlock()
+  // })
+  // .then( payload => {
+  //   updateSlackTs('5fbe1820fa3495eb42f74678', payload) // slackMessage_Ts 
+  //   res.redirect('/')
+  // })
+  // .catch( err => console.log(err))
 });
 
 module.exports = router;
 
-module.exports.sendRatingMessage = sendRatingMessage
+module.exports.sendRatingMessage = sendRatingMessage;
+
+module.exports.sendUserDirectMessage = sendUserDirectMessage;

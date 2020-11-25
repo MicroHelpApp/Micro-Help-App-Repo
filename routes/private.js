@@ -75,7 +75,7 @@ router.get('/dashboard', middlewares.loginCheck, (req, res, next) => {
       if (data.status == 'Open'){ 
         HelpSession.findByIdAndUpdate(data._id, {status: 'Done', sessionEndDate: new Date() , sessEndStr: new Date().toString().slice(0,21), sessionDuration: Math.ceil(Math.abs( new Date() - data.sessionStartDate) / (1000 * 60 * 60))} ) 
         .then(data => {
-          schedule.sendRatingMessage(helpSessionObj)    
+          schedule.sendUserDirectMessage(helpSessionObj)    
           res.redirect('/private/overview')
         })
       }
