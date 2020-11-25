@@ -25,7 +25,7 @@ const okMessage = (username, channelId) => { //this is no longer being used.
     .catch( err => console.log(err))
 }
 
-const newRatingBlock = (helpSession) => {
+const newRatingBlock = (helpSession) => { //this returns a rating block
 
   return [
       {
@@ -37,11 +37,11 @@ const newRatingBlock = (helpSession) => {
           },
           {
             "type": "mrkdwn",
-            "text": `*Date Created:*\n${helpSession.sessionStartDate}`
+            "text": `*Date Created:*\n${helpSession.sessStartStr}`
           },
           {
             "type": "mrkdwn",
-            "text": `*Date Completed:*\n${helpSession.sessionEndDate}`
+            "text": `*Date Completed:*\n${helpSession.sessEndStr}`
           },
           {
             "type": "mrkdwn",
@@ -113,7 +113,7 @@ const newRatingBlock = (helpSession) => {
     ]
 }
 
-const createUserFromSlack = (slackUserId) => {
+const createUserFromSlack = (slackUserId) => { //here we create a user coming from slack
 
   return Slack.users.info({
     token: token,
@@ -132,13 +132,14 @@ const createUserFromSlack = (slackUserId) => {
   
 }
 
-const createHelpSession = (user, channelId) => {
+const createHelpSession = (user, channelId) => { // here we create the helpSession
   console.log(user)
   return HelpSession.create({
     status: 'Open',
     type: 'scheduledForNow',
     student: user._id || user[0]._id,
     sessionStartDate: new Date(),
+    sessStartStr: new Date().toString().slice(0,21),
     slackChannelId: channelId,
     studentSlackId: user.slackUserId || user[0].slackUserId,
     slackUserRealName: user.slackUserRealName || user[0].slackUserRealName
@@ -168,7 +169,7 @@ const createHelpSession = (user, channelId) => {
   .catch(err => console.log(err))
 }
 
-const updateSlackTs = (helpSessionId, payload) => {
+const updateSlackTs = (helpSessionId, payload) => { // here we update the slackTs - this is the Id of a block sent to slack
 
   HelpSession
   .findByIdAndUpdate(

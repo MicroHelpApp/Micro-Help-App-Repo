@@ -22,11 +22,11 @@ const updateRatingBlock = (helpSession) => {
             },
             {
               "type": "mrkdwn",
-              "text": `*Date Created:*\n${helpSession.sessionStartDate}`
+              "text": `*Date Created:*\n${helpSession.sessStartStr}`
             },
             {
               "type": "mrkdwn",
-              "text": `*Date Completed:*\n${helpSession.sessionEndDate}`
+              "text": `*Date Completed:*\n${helpSession.sessEndStr}`
             },
             {
               "type": "mrkdwn",
