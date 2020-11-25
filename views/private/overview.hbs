@@ -24,15 +24,15 @@
             <td class="{{status}}">{{status}}</td>
             <td>{{student.username}}</td>
             <td>{{#unless teacher}}
-                <form action="/private/assign/">
+                <form action="/private/assign{{_id}}" method="POST">
     {{!-- <div class="form-group col-md-4"> --}}
       {{!-- <label for="inputState"></label> --}}
-      <select id="inputTA" class="form-control">
+      <select id="inputTA" class="form-control" name="q">
         <option selected>Choose...</option>
-        <option>Jeff</option>
-        <option>Tim</option>
-        <option>Kevin</option>
-        <option>Jan</option>
+        {{#each ../teachers}}
+        <option value="{{_id}}">{{username}}</option>
+        {{/each}}
+{{!-- <option>{{teacher}}</option> --}}
       </select>
       <button type="submit" class="btn btn-primary">Submit</button>
     {{!-- </div> --}}
@@ -50,6 +50,4 @@
     {{/each}}
     </tbody>
 </table>
-{{!-- <script src="/javascripts/script.js"></script> --}}
-
 
