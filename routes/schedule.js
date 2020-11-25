@@ -12,92 +12,6 @@ const bot = new Slack({token});
 //variables
 const sendMessageSlackWebhook = process.env.SLACK_MESSAGE_WEBHOOK
 
-const ratingMessage = {
-  "blocks": [
-    {
-      "type": "section",
-      "fields": [
-        {
-          "type": "mrkdwn",
-          "text": "*Type:*\nASAP"
-        },
-        {
-          "type": "mrkdwn",
-          "text": "*When:*\nSubmitted Mar 10, 2020 10:23"
-        },
-        {
-          "type": "mrkdwn",
-          "text": "*Last Update:*\nMar 10, 2020 10:45"
-        },
-        {
-          "type": "mrkdwn",
-          "text": "*Topic:*\nlab-spotify."
-        }
-      ]
-    },
-    {
-      "type": "section",
-      "text": {
-        "type": "mrkdwn",
-        "text": "*How was your session with the TA?*\nselect one of the below options to rate the session :) "
-      }
-    },
-    {
-      "type": "actions",
-      "elements": [
-        {
-          "type": "button",
-          "text": {
-            "type": "plain_text",
-            "emoji": true,
-            "text": "Very good!"
-          },
-          "style": "primary",
-          "value": "very_good"
-        },
-        {
-          "type": "button",
-          "text": {
-            "type": "plain_text",
-            "emoji": true,
-            "text": "good"
-          },
-          "style": "primary",
-          "value": "good"
-        },
-        {
-          "type": "button",
-          "text": {
-            "type": "plain_text",
-            "emoji": true,
-            "text": "meh..."
-          },
-          "value": "meh"
-        },
-        {
-          "type": "button",
-          "text": {
-            "type": "plain_text",
-            "emoji": true,
-            "text": "bad"
-          },
-          "value": "bad"
-        },
-        {
-          "type": "button",
-          "text": {
-            "type": "plain_text",
-            "emoji": true,
-            "text": "Very bad! "
-          },
-          "style": "danger",
-          "value": "very_bad"
-        }
-      ]
-    }
-  ]
-}
-
 
 //functions
 const okMessage = (username, channelId) => {
@@ -110,7 +24,7 @@ const okMessage = (username, channelId) => {
     .catch( err => console.log(err))
 }
 
-const ratingBlock = () => {
+const newRatingBlock = (helpSession) => {
 
   return [
       {
@@ -118,19 +32,19 @@ const ratingBlock = () => {
         "fields": [
           {
             "type": "mrkdwn",
-            "text": "*Type:*\nASAP"
+            "text": `*Type:*\n${helpSession.type}`
           },
           {
             "type": "mrkdwn",
-            "text": "*When:*\nSubmitted Mar 10, 2020 10:23"
+            "text": `*Date Created:*\n${helpSession.sessionStartDate}`
           },
           {
             "type": "mrkdwn",
-            "text": "*Last Update:*\nMar 10, 2020 10:45"
+            "text": `*Date Completed:*\n${helpSession.sessionEndDate}`
           },
           {
             "type": "mrkdwn",
-            "text": "*Topic:*\nlab-spotify."
+            "text": `*Status:*\n.${helpSession.status}` 
           }
         ]
       },
@@ -149,48 +63,49 @@ const ratingBlock = () => {
             "text": {
               "type": "plain_text",
               "emoji": true,
-              "text": "Very good!"
+              "text": "Very good! 5️⃣"
             },
             "style": "primary",
-            "value": "very_good"
+            "value": "5"
           },
           {
             "type": "button",
             "text": {
               "type": "plain_text",
               "emoji": true,
-              "text": "good"
+              "text": "good 4️⃣"
             },
             "style": "primary",
-            "value": "good"
+            "value": "4"
           },
           {
             "type": "button",
             "text": {
               "type": "plain_text",
               "emoji": true,
-              "text": "meh..."
+              "text": "meh... 3️⃣"
             },
-            "value": "meh"
+            "value": "3"
           },
           {
             "type": "button",
             "text": {
               "type": "plain_text",
               "emoji": true,
-              "text": "bad"
-            },
-            "value": "bad"
-          },
-          {
-            "type": "button",
-            "text": {
-              "type": "plain_text",
-              "emoji": true,
-              "text": "Very bad! "
+              "text": "bad 2️⃣"
             },
             "style": "danger",
-            "value": "very_bad"
+            "value": "2"
+          },
+          {
+            "type": "button",
+            "text": {
+              "type": "plain_text",
+              "emoji": true,
+              "text": "Very bad! 1️⃣"
+            },
+            "style": "danger",
+            "value": "1"
           }
         ]
       }
@@ -207,9 +122,6 @@ const createUserFromSlack = (name, slackUserId) => {
 }
 
 const createHelpSession = (user, channelId) => {
-  //console.log(user)
-  //console.log(user)
-  //console.log(user[0]._id)
   return HelpSession.create({
     status: 'open',
     type: 'scheduledForNow',
@@ -238,11 +150,10 @@ const updateSlackTs = (helpSessionId, payload) => {
   .catch(err => console.log(err))
 }
 
-const sendUserDirectMessage = (helpSession) => {
+const sendUserDirectMessage = (helpSession) => { //fist we must open a conversation
   Slack.conversations.open({
     token: token, 
     users: helpSession.studentSlackId,
-    text: 'this is a message from the bot'
   })
   .then( payload => {
     sendRatingMessage(payload, helpSession)
@@ -250,17 +161,24 @@ const sendUserDirectMessage = (helpSession) => {
   .catch( err => console.log(err))
 }
 
-const sendRatingMessage = (payload, helpSession) => {
-  Slack.chat.postMessage({
-    token: token, 
-    channel: payload.channel.id, 
-    text: 'test text',
-    blocks: ratingBlock()
-  })
-  .then( data => {
-    updateSlackTs(helpSession._id, data) 
+const sendRatingMessage = (payload, helpSession) => { //then we can send the message 
+  
+  HelpSession.findById(helpSession._id)
+  .then( helpSessionFound => {
+    Slack.chat.postMessage({
+      token: token, 
+      channel: payload.channel.id, 
+      text: 'Rate your last help session!',
+      blocks: newRatingBlock(helpSessionFound)
+    })
+    .then( data => {
+      updateSlackTs(helpSession._id, data) 
+    })
+    .catch( err => console.log(err))
+
   })
   .catch( err => console.log(err))
+  
 }
 
 //routes 

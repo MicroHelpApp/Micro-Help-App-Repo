@@ -31,7 +31,7 @@ const helpSessionSchema = new Schema({
     description: String,
     slackChannelId: String,
     slackMessage_Ts: String,
-    userRating_text: String
+    userRating_text: String //this can be removed 
 });
 
 const HelpSession = mongoose.model('HelpSession', helpSessionSchema);
