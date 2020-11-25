@@ -6,7 +6,8 @@ const HelpSession = require('../models/HelpSession')
 
 const middlewares = require('./middlewares');
 
-const schedule = require('./schedule')
+const schedule = require('./schedule');
+const { Session } = require('express-session');
 
 //routes 
 router.get('/', middlewares.loginCheck, (req, res) => {
@@ -31,19 +32,11 @@ router.get('/dashboard', middlewares.loginCheck, (req, res, next) => {
     HelpSession.find().populate('student')
     .populate('teacher')
     .then(sessions => {
-
-      sessions.forEach( (sess)=>{
-        
-        // sess.sessStartString = 'Test'
-      // sess[sessStartString] = 'test'
-      // sess.sessionStartDate = sess.sessionStartDate
-      console.log(sess.sessStartString)
+      User.find({type: 'teacherAssistant'})
+      .then( teachers => {
+        // console.log(teachers[0].username)
+        res.render('private/overview', { sessionList: sessions, teachers })
       })
-      console.log(sessions)
-      // sessions.sessionStartDate.getHours() + ":" + sessions.sessionStartDate.getMinutes() + ":" + sessions.sessionStartDate.getSeconds();
-      // // console.log(sessions)
-      // // console.log(sessions)
-      res.render('private/overview', { sessionList: sessions })
     }).catch(err => {
       console.log(err);
     })
@@ -87,6 +80,16 @@ router.get('/dashboard', middlewares.loginCheck, (req, res, next) => {
       console.log(err);
     })
   })
+
+  router.post('/assign:id', middlewares.loginCheck, (req, res, next) => {
+    console.log(req.body)
+    console.log(req.params)
+    HelpSession.findByIdAndUpdate(req.params.id, {teacher: req.body.q})
+    .then( ()=> {
+      res.redirect('/private/overview')
+    })
+  })
+
 
 
 module.exports = router;

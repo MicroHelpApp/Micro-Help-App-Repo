@@ -139,6 +139,7 @@ const createHelpSession = (user, channelId) => {
     type: 'scheduledForNow',
     student: user._id || user[0]._id,
     sessionStartDate: new Date(),
+    sessStartStr: new Date().toString().slice(0,21),
     slackChannelId: channelId,
     studentSlackId: user.slackUserId || user[0].slackUserId,
     slackUserRealName: user.slackUserRealName || user[0].slackUserRealName
