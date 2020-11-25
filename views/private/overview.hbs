@@ -21,17 +21,35 @@
 
         {{#each sessionList}}
         <tr>
-            <td>{{status}}</td>
+            <td class="{{status}}">{{status}}</td>
             <td>{{student.username}}</td>
-            <td>{{teacher.username}}</td>
+            <td>{{#unless teacher}}
+                <form action="/private/assign/">
+    {{!-- <div class="form-group col-md-4"> --}}
+      {{!-- <label for="inputState"></label> --}}
+      <select id="inputTA" class="form-control">
+        <option selected>Choose...</option>
+        <option>Jeff</option>
+        <option>Tim</option>
+        <option>Kevin</option>
+        <option>Jan</option>
+      </select>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    {{!-- </div> --}}
+    </form>
+                {{else}}
+                {{teacher.username}}
+                {{/unless}}</td>
             {{!-- add time started --}}
             {{!-- add time completed --}}
             <td>{{description}}</td>
-            <td>{{sessionStartDate}}</td>
-            <td>{{sessionEndDate}}</td>
-            <td><a href="/private/close/{{_id}}">Close session</a></td>
+            <td>{{sessStartStr}}</td>
+            <td>{{sessEndStr}}</td>
+            <td class="{{status}}"><a href="/private/close/{{_id}}" >Close session</a></td>
         </tr>
     {{/each}}
     </tbody>
 </table>
+{{!-- <script src="/javascripts/script.js"></script> --}}
+
 

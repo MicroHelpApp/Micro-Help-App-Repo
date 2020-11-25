@@ -13,11 +13,13 @@
 <body>
   <nav class="nav justify-content-center">
    <a class="nav-link" href="/">Home</a>
+   {{!-- {{#unless user}} --}}
       <a class="nav-link" href="/auth/signup">Signup</a>
       <a class="nav-link" href="/auth/login">Login</a>
-      {{!-- The below should be hidden unless the user signs in --}}
+    {{!-- {{else}} --}}
       <a class="nav-link" href="/private/overview">Overview</a>
       <a class="nav-link" href="/private/dashboard">Analytics</a>
+    {{!-- {{/unless}} --}}
   </nav>
 
   {{{body}}}

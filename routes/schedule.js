@@ -45,7 +45,7 @@ const newRatingBlock = (helpSession) => {
           },
           {
             "type": "mrkdwn",
-            "text": `*Status:*\n.${helpSession.status}` 
+            "text": `*Status:*\n${helpSession.status}` 
           }
         ]
       },
@@ -135,17 +135,19 @@ const createUserFromSlack = (slackUserId) => {
 const createHelpSession = (user, channelId) => {
   console.log(user)
   return HelpSession.create({
-    status: 'open',
+    status: 'Open',
     type: 'scheduledForNow',
     student: user._id || user[0]._id,
-    sessionStartDate: Date.now(),
+    sessionStartDate: new Date(),
     slackChannelId: channelId,
     studentSlackId: user.slackUserId || user[0].slackUserId,
     slackUserRealName: user.slackUserRealName || user[0].slackUserRealName
   })
   .then(data => {
     //okMessage(user.username || user[0].username, channelId) This has been substituted by the below implementation
-    HelpSession.find()
+    HelpSession.find({
+      status: 'Open'
+    })
     .then(arr => {
       console.log(arr)
       return buildScheduleListForSlack(user, arr)
