@@ -6,7 +6,7 @@ const helpSessionSchema = new Schema({
     status: {
         type: String,
         required: true,
-        enum: ['open', 'done']
+        enum: ['Open', 'Done']
     },
     type: {
       type: String, 
