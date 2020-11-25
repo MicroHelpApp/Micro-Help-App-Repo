@@ -31,15 +31,16 @@ router.get('/dashboard', middlewares.loginCheck, (req, res, next) => {
     HelpSession.find().populate('student')
     .populate('teacher')
     .then(sessions => {
-      // render a books view to display them      
-      // // sessions.sessionStartDate = 14/07/2020
-      // sessions.forEach( (sess)=>{
-      //   console.log(sess);
-      //   sess.description = sess.sessionStartDate.toString().split(' ')[4]
-      // // sess[hours] = sess.sessionStartDate.toString().split(' ')[4]
-      // // sess.sessionStartDate = sess.sessionStartDate
-      // })
-      // // sessions.sessionStartDate.getHours() + ":" + sessions.sessionStartDate.getMinutes() + ":" + sessions.sessionStartDate.getSeconds();
+
+      sessions.forEach( (sess)=>{
+        
+        // sess.sessStartString = 'Test'
+      // sess[sessStartString] = 'test'
+      // sess.sessionStartDate = sess.sessionStartDate
+      console.log(sess.sessStartString)
+      })
+      console.log(sessions)
+      // sessions.sessionStartDate.getHours() + ":" + sessions.sessionStartDate.getMinutes() + ":" + sessions.sessionStartDate.getSeconds();
       // // console.log(sessions)
       // // console.log(sessions)
       res.render('private/overview', { sessionList: sessions })
@@ -72,7 +73,7 @@ router.get('/dashboard', middlewares.loginCheck, (req, res, next) => {
       
       // if the session is open, close it
       if (data.status == 'Open'){ 
-        HelpSession.findByIdAndUpdate(data._id, {status: 'Done', sessionEndDate: Date.now()} ) 
+        HelpSession.findByIdAndUpdate(data._id, {status: 'Done', sessionEndDate: new Date() , sessEndStr: new Date().toString().slice(0,21), sessionDuration: Math.ceil(Math.abs( new Date() - data.sessionStartDate) / (1000 * 60 * 60))} ) 
         .then(data => {
           schedule.sendRatingMessage(helpSessionObj)    
           res.redirect('/private/overview')

@@ -23,12 +23,17 @@
         <tr>
             <td class="{{status}}">{{status}}</td>
             <td>{{student.username}}</td>
-            <td>{{teacher.username}}</td>
+            <td>{{#unless teacher}}
+                <form action="/private/assign/">
+                <input type="text"></form>
+                {{else}}
+                {{teacher.username}}
+                {{/unless}}</td>
             {{!-- add time started --}}
             {{!-- add time completed --}}
             <td>{{description}}</td>
-            <td>{{sessionStartDate}}</td>
-            <td>{{sessionEndDate}}</td>
+            <td>{{sessStartStr}}</td>
+            <td>{{sessEndStr}}</td>
             <td class="{{status}}"><a href="/private/close/{{_id}}" >Close session</a></td>
         </tr>
     {{/each}}

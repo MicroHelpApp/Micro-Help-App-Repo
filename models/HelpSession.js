@@ -23,7 +23,10 @@ const helpSessionSchema = new Schema({
     }, //if we want the teacher id here, we need it to be a different entity collection, no? 
     topic: String, //maybe here we should add a enum with the list of accepted values? or maybe we can handle this on slacks side
     sessionStartDate: Date,
+    sessStartStr: String,
     sessionEndDate: Date,
+    sessEndStr: String,
+    sessionDuration: Number,
     userRating: Number,
     teacherRating: Number,
     images: Array,
