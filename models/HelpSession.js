@@ -17,6 +17,7 @@ const helpSessionSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User',
     },
+    studentSlackId: String,
     teacher: {
         type: Schema.Types.ObjectId,
         ref: 'User',

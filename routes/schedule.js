@@ -215,7 +215,8 @@ const createHelpSession = (user, channelId) => {
     type: 'scheduledForNow',
     student: user._id || user[0]._id,
     sessionStartDate: Date.now(),
-    slackChannelId: channelId
+    slackChannelId: channelId,
+    studentSlackId: user.slackUserId || user[0].slackUserId
   })
   .then(data => {
     okMessage(user.username || user[0].username, channelId)
@@ -237,15 +238,27 @@ const updateSlackTs = (helpSessionId, payload) => {
   .catch(err => console.log(err))
 }
 
-const sendRatingMessage = (helpSession) => {
+const sendUserDirectMessage = (helpSession) => {
+  Slack.conversations.open({
+    token: token, 
+    users: helpSession.studentSlackId,
+    text: 'this is a message from the bot'
+  })
+  .then( payload => {
+    sendRatingMessage(payload, helpSession)
+  })
+  .catch( err => console.log(err))
+}
+
+const sendRatingMessage = (payload, helpSession) => {
   Slack.chat.postMessage({
     token: token, 
-    channel: helpSession.slackChannelId, 
+    channel: payload.channel.id, 
     text: 'test text',
     blocks: ratingBlock()
   })
-  .then( payload => {
-    updateSlackTs(helpSession._id, payload) 
+  .then( data => {
+    updateSlackTs(helpSession._id, data) 
   })
   .catch( err => console.log(err))
 }
@@ -283,7 +296,7 @@ router.post('/sendText', (req, res, next) => {
     blocks: ratingBlock()
   })
   .then( payload => {
-    updateSlackTs('5fbd2da605778826baa76ad6', payload) // slackMessage_Ts 
+    updateSlackTs('5fbe1820fa3495eb42f74678', payload) // slackMessage_Ts 
     res.redirect('/')
   })
   .catch( err => console.log(err))
@@ -291,4 +304,6 @@ router.post('/sendText', (req, res, next) => {
 
 module.exports = router;
 
-module.exports.sendRatingMessage = sendRatingMessage
+module.exports.sendRatingMessage = sendRatingMessage;
+
+module.exports.sendUserDirectMessage = sendUserDirectMessage;

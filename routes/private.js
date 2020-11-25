@@ -73,8 +73,8 @@ router.get('/dashboard', middlewares.loginCheck, (req, res, next) => {
       // if the session is open, close it
       if (data.status == 'open'){ 
         HelpSession.findByIdAndUpdate(data._id, {status: 'done', sessionEndDate: Date.now()} ) 
-        .then(data => {
-          schedule.sendRatingMessage(helpSessionObj)    
+        .then(data => {   
+          schedule.sendUserDirectMessage(helpSessionObj)
           res.redirect('/private/overview')
         })
       }
