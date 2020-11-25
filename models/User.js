@@ -21,6 +21,7 @@ const userSchema = new Schema({
     numberOfSessions: Number,
     avgRating: Number, 
     country: String,
+    slackUserRealName: String
 });
 
 const User = mongoose.model('User', userSchema);
