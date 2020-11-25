@@ -25,7 +25,18 @@
             <td>{{student.username}}</td>
             <td>{{#unless teacher}}
                 <form action="/private/assign/">
-                <input type="text"></form>
+    {{!-- <div class="form-group col-md-4"> --}}
+      {{!-- <label for="inputState"></label> --}}
+      <select id="inputTA" class="form-control">
+        <option selected>Choose...</option>
+        <option>Jeff</option>
+        <option>Tim</option>
+        <option>Kevin</option>
+        <option>Jan</option>
+      </select>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    {{!-- </div> --}}
+    </form>
                 {{else}}
                 {{teacher.username}}
                 {{/unless}}</td>
@@ -40,3 +51,5 @@
     </tbody>
 </table>
 {{!-- <script src="/javascripts/script.js"></script> --}}
+
+
