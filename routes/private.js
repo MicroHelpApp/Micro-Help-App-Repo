@@ -11,7 +11,9 @@ const { Session } = require('express-session');
 
 //routes 
 router.get('/', middlewares.loginCheck, (req, res) => {
-    res.render('private/mainpage')
+    res.render('private/mainpage', {
+      user: req.user
+    })
 })
 
 router.get('/dashboard', middlewares.loginCheck, (req, res, next) => {
@@ -21,7 +23,10 @@ router.get('/dashboard', middlewares.loginCheck, (req, res, next) => {
     .then(sessions => {
       // render a books view to display them
       console.log(sessions)
-      res.render('private/dashboard', { sessionList: sessions })
+      res.render('private/dashboard', { 
+        sessionList: sessions, 
+        user: req.user
+      })
     }).catch(err => {
       console.log(err);
     })
