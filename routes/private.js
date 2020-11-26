@@ -35,7 +35,6 @@ router.get('/dashboard', middlewares.loginCheck, (req, res, next) => {
   router.get('/overview', middlewares.loginCheck, (req, res, next) => {
     // get all the sessions from the database
     HelpSession.find({status: "Open"}).sort( { sessionStartDate : -1} )
-
     .populate('student')
     .populate('teacher')
     .then((openSessions)=>{
@@ -47,7 +46,7 @@ router.get('/dashboard', middlewares.loginCheck, (req, res, next) => {
         User.find({type: 'teacherAssistant'})
         .then( teachers => {
           // console.log(teachers[0].username)
-          res.render('private/overview', { sessionList: openSessions, closedSessions, teachers })
+          res.render('private/overview', { sessionList: openSessions, closedSessions, teachers, user: req.user })
         })
     })
     }).catch(err => {

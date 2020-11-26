@@ -159,6 +159,13 @@ nav ul li a {
   font-family: "Source Sans Pro";
   font-size: 1rem; }
 
+.chart-container {
+  display: flex;
+  flex-direction: row;
+  max-width: 30vw;
+  justify-content: space-between; }
 
+#ClosedTable {
+  margin: 5%; }
 
 /*# sourceMappingURL=style.css.map */
