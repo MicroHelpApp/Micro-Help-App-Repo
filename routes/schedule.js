@@ -7,6 +7,7 @@ const token = process.env.SLACK_BOT_TOKEN;
 const Slack = require('slack');
 const User = require('../models/User');
 const HelpSession = require('../models/HelpSession');
+const { routes } = require('../app');
 const bot = new Slack({token});
 
 
@@ -157,7 +158,7 @@ const createHelpSession = (user, channelId) => { // here we create the helpSessi
       Slack.chat.postMessage({
         token: token, 
         channel: channelId, // slackChannelId
-        text: str
+        text: `*Hey ${user.username || user[0].username}, your help session in on its way! 🧠 *\n` + str
       })
       .then( payload => {
         console.log('str was sent')
@@ -214,11 +215,11 @@ const sendRatingMessage = (payload, helpSession) => { //then we can send the mes
   
 }
 
-const buildScheduleListForSlack = (user, arr) => {
-  let str = `*Hey ${user.username || user[0].username}, your help session in on its way! 🧠 *\n\nThe current waiting list is:\n`;
+const buildScheduleListForSlack = (arr) => {
+  let str = `\n*The current waiting list is: 📝 *\n`;
 
   for (let i = 0; i < arr.length; i++) {
-    str += `\n ${i+1}. ${arr[i].slackUserRealName}`
+    str += `\n ${i+1}. ${arr[i].slackUserRealName}, ${arr[i].sessStartStr}`
   }
   return str
 }
@@ -249,6 +250,57 @@ router.post('/', (req, res, next) => {
   res.sendStatus(200)
   });
 
+router.post('/list', (req, res, next) => {
+
+  console.log(req.body)
+
+  HelpSession.find({
+    status: 'Open'
+  }).sort({sessionStartDate: 1})
+  .then(arr => {
+    return buildScheduleListForSlack(arr)
+  })
+  .then(str => {
+    Slack.chat.postMessage({
+      token: token, 
+      channel: req.body.channel_id, // slackChannelId
+      text: str
+    })
+  })
+  res.sendStatus(200)
+})
+
+router.post('/closeSession', (req, res, next) => {
+
+  console.log(req.body.text)
+
+  const slackUserRealNameText = req.body.text
+
+  HelpSession.find({
+    slackUserRealName: slackUserRealNameText,
+    status: 'Open'
+  }).sort({sessionStartDate: 1})
+  .then(found => {
+
+    //HelpSession.findById(found[0]._id).then(data => console.log(`the id is ${data}`))
+    HelpSession.findOneAndUpdate({_id: found[0]._id}, {
+      status: 'Done', 
+      sessionEndDate: new Date(), 
+      sessEndStr: new Date().toString().slice(0,21), 
+      sessionDuration: Math.ceil(Math.abs( new Date() - found[0].sessionStartDate) / (1000 * 60 * 60))
+    })
+    .then( data => {
+      sendUserDirectMessage(data)
+    })
+    .catch(err => console.log(err))
+
+
+  })
+  .catch(err => console.log(err))
+
+  res.sendStatus(200)
+  
+})
 
 // This is a form added just so we can trigger a slack message from the web. it is optional.
 router.post('/sendText', (req, res, next) => {

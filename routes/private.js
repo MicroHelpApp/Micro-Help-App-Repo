@@ -79,8 +79,10 @@ router.get('/dashboard', middlewares.loginCheck, (req, res, next) => {
   });
 
   router.get('/close/:id', middlewares.loginCheck, (req, res, next) => {
-    // console.log(req.params.id)
+    //console.log(req.params.id)
+    
 //Bring me the information on the clicked button
+    
     let id = req.params.id
     HelpSession.findById(id)
     .then(data => {
@@ -88,7 +90,12 @@ router.get('/dashboard', middlewares.loginCheck, (req, res, next) => {
       
       // if the session is open, close it
       if (data.status == 'Open'){ 
-        HelpSession.findByIdAndUpdate(data._id, {status: 'Done', sessionEndDate: new Date() , sessEndStr: new Date().toString().slice(0,21), sessionDuration: Math.ceil(Math.abs( new Date() - data.sessionStartDate) / (1000 * 60 * 60))} ) 
+        HelpSession.findByIdAndUpdate(data._id, {
+          status: 'Done', 
+          sessionEndDate: new Date() , 
+          sessEndStr: new Date().toString().slice(0,21), 
+          sessionDuration: Math.ceil(Math.abs( new Date() - data.sessionStartDate) / (1000 * 60 * 60))
+        }) 
         .then(data => {
           schedule.sendUserDirectMessage(helpSessionObj)    
           res.redirect('/private/overview')
