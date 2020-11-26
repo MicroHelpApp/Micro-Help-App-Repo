@@ -163,7 +163,16 @@ nav ul li a {
   display: flex;
   flex-direction: row;
   max-width: 30vw;
-  justify-content: space-between; }
+  justify-content: space-between;
+  margin: 5%; }
+
+.series-container {
+  margin: 20%;
+  align-items: center;
+  justify-content: center; }
+
+.chart-container canvas {
+  margin: 5%; }
 
 #ClosedTable {
   margin: 5%; }
