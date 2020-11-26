@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderAvgSessDuration()
     renderAvgSessRating()
     renderAvgSessRatingByTA()
+    renderTimeSeries()
   console.log('JS file connected successfully');
 
 }, false);
@@ -86,7 +87,7 @@ renderAvgSessRating = () => {
                         label: 'Average duration in minutes',
                         data: [avg],
                         backgroundColor: [
-                            'rgba(153, 102, 255, .02)'
+                            'rgba(153, 102, 255, .2)'
                         ],
                         borderColor: [
                             'rgba(153, 102, 255, 1)'
@@ -113,7 +114,7 @@ renderAvgSessRating = () => {
             fetch('/private/doneSessions')
             .then(res => res.json())
             .then(data => {
-                console.log(data.sessions)
+                // console.log(data.sessions)
                 let taObj = {}
                 let names = []
                 let sessRating = []
@@ -130,7 +131,7 @@ renderAvgSessRating = () => {
                     taObj[el][2] = taObj[el][0]/taObj[el][1]
                     names.push(el)
                     sessRating.push(taObj[el][2])
-                    console.log(names, sessRating)
+                    // console.log(names, sessRating)
                 }
                 
                 var ctx = document.getElementById('myChart2').getContext('2d');
@@ -173,3 +174,54 @@ renderAvgSessRating = () => {
                 });
               })
             }
+
+renderTimeSeries = () => {
+
+    fetch('/private/doneSessions')
+    .then(res => res.json())
+    .then(data => {
+        // console.log(data.sessions);
+        let taObj = {}
+        let names = []
+        let sessRating = []
+        for (let i = 0; i < data.sessions.length; i++){
+            if (taObj[data.sessions[i].sessionEndDate.slice(5,10)]){
+                taObj[data.sessions[i].sessionEndDate.slice(5,10)][0] += data.sessions[i].userRating
+                taObj[data.sessions[i].sessionEndDate.slice(5,10)][1] += 1
+                } else {
+                taObj[data.sessions[i].sessionEndDate.slice(5,10)] = [data.sessions[i].userRating, 1]
+                }
+            }
+             
+        for (let el in taObj){
+            taObj[el][2] = taObj[el][0]/taObj[el][1]
+            names.push(el)
+            sessRating.push(taObj[el][2])
+        }
+        // console.log(data.sessions.length)
+        // console.log(sessRating, names);  
+        var ctx = document.getElementById('myChart4').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: names,
+                datasets: [{
+                    label: 'Average session rating by day',
+                    data: sessRating,
+                    backgroundColor: 'rgba(54, 162, 235, .15)',
+                    pointBorderColor: 'rgba(255, 206, 86, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+        })
+    }
