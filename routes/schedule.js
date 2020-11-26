@@ -152,7 +152,7 @@ const createHelpSession = (user, channelId) => { // here we create the helpSessi
     })
     .then(arr => {
       console.log(arr)
-      return buildScheduleListForSlack(user, arr)
+      return buildScheduleListForSlack(arr)
     }).then(str => {
       console.log(str)
       Slack.chat.postMessage({
