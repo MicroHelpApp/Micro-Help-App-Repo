@@ -50,4 +50,55 @@
     {{/each}}
     </tbody>
 </table>
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Status</td>
+            <th scope="col">Student</td>
+            <th scope="col">Assigned TA</td>
+            <th scope="col">Issue</td>
+            {{!-- add time started --}}
+            {{!-- add time completed --}}
+            <th scope="col">Help requested</td>
+            <th scope="col">Session resolved</td>
+            <th scope="col">Action</td>  
+        </tr>
+    </thead>
+    <tbody>
+        {{!-- add a table row for each session that is open in the last 2 hours --}}
+        <tr>
+
+        </tr>
+
+        {{#each closedSessions}}
+        <tr>
+            <td class="{{status}}">{{status}}</td>
+            <td>{{student.username}}</td>
+            <td>{{#unless teacher}}
+                <form action="/private/assign{{_id}}" method="POST">
+    {{!-- <div class="form-group col-md-4"> --}}
+      {{!-- <label for="inputState"></label> --}}
+      <select id="inputTA" class="form-control" name="q">
+        <option selected>Choose...</option>
+        {{#each ../teachers}}
+        <option value="{{_id}}">{{username}}</option>
+        {{/each}}
+{{!-- <option>{{teacher}}</option> --}}
+      </select>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    {{!-- </div> --}}
+    </form>
+                {{else}}
+                {{teacher.username}}
+                {{/unless}}</td>
+            {{!-- add time started --}}
+            {{!-- add time completed --}}
+            <td>{{description}}</td>
+            <td>{{sessStartStr}}</td>
+            <td>{{sessEndStr}}</td>
+            <td class="{{status}}"><a href="/private/close/{{_id}}" >Close session</a></td>
+        </tr>
+    {{/each}}
+    </tbody>
+</table>
 

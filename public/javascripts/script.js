@@ -13,7 +13,9 @@ const mainButton = document.getElementById("initialDisplay")
 
 
 document.addEventListener('DOMContentLoaded', () => {
-
+    renderAvgSessDuration()
+    renderAvgSessRating()
+    renderAvgSessRatingByTA()
   console.log('JS file connected successfully');
 
 }, false);
@@ -43,10 +45,10 @@ renderAvgSessRating = () => {
                     label: 'Average rating',
                     data: [avg],
                     backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)'
+                        'rgba(255, 159, 64, .2)'
                     ],
                     borderColor: [
-                        'rgba(255, 99, 132, 1)'
+                        'rgba(255, 159, 64, 1)'
                     ],
                     borderWidth: 1
                 }]
@@ -75,7 +77,7 @@ renderAvgSessRating = () => {
                     sum += data.sessions[i].sessionDuration
                 }
             let avg = sum/data.sessions.length
-            var ctx = document.getElementById('myChart').getContext('2d');
+            var ctx = document.getElementById('myChart3').getContext('2d');
             var myChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
@@ -131,9 +133,10 @@ renderAvgSessRating = () => {
                     console.log(names, sessRating)
                 }
                 
-                var ctx = document.getElementById('myChart').getContext('2d');
+                var ctx = document.getElementById('myChart2').getContext('2d');
                 var myChart = new Chart(ctx, {
                     type: 'bar',
+                    maintainAspectRatio: false,
                     data: {
                         labels: names,
                         datasets: [{
