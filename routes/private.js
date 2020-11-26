@@ -34,17 +34,22 @@ router.get('/dashboard', middlewares.loginCheck, (req, res, next) => {
 
   router.get('/overview', middlewares.loginCheck, (req, res, next) => {
     // get all the sessions from the database
-    HelpSession.find().populate('student')
+    HelpSession.find({status: "Open"}).sort( { sessionStartDate : -1} )
+
+    .populate('student')
     .populate('teacher')
-    .then(sessions => {
-      User.find({type: 'teacherAssistant'})
-      .then( teachers => {
-        // console.log(teachers[0].username)
-        res.render('private/overview', {
-          sessionList: sessions, teachers, 
-          user: req.user
-          })
-      })
+    .then((openSessions)=>{
+      HelpSession.find({status: "Done"}).sort( { sessionEndDate : -1} )
+      .limit(10)
+      .populate('student')
+      .populate('teacher')
+      .then(closedSessions => {
+        User.find({type: 'teacherAssistant'})
+        .then( teachers => {
+          // console.log(teachers[0].username)
+          res.render('private/overview', { sessionList: openSessions, closedSessions, teachers })
+        })
+    })
     }).catch(err => {
       console.log(err);
     })
@@ -54,9 +59,19 @@ router.get('/dashboard', middlewares.loginCheck, (req, res, next) => {
     // get all the sessions from the database
     HelpSession.find().populate('student')
     .populate('teacher')
+    .then(sessions => { 
+      console.log(sessions)
+      res.json( {sessions})
+    }).catch(err => {
+      console.log(err);
+    })
+  });
+
+  router.get('/doneSessions', (req, res, next) => {
+    // get all the sessions from the database
+    HelpSession.find({status: 'Done'}).populate('student')
+    .populate('teacher')
     .then(sessions => {
-      // render a books view to display them
-      
       console.log(sessions)
       res.json( {sessions})
     }).catch(err => {
