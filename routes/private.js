@@ -68,7 +68,9 @@ router.get('/dashboard', middlewares.loginCheck, (req, res, next) => {
 
   router.get('/doneSessions', (req, res, next) => {
     // get all the sessions from the database
-    HelpSession.find({status: 'Done'}).limit(30)
+    HelpSession.find({status: 'Done'})
+    .sort({sessionEndDate: -1})
+    .limit(30)
     .populate('student')
     .populate('teacher')
     .then(sessions => {
