@@ -1,21 +1,26 @@
-<h1>Login</h1>
 
-<form action="/auth/login" method="POST" class="form-inline">
-  <div class="form-group mb-2">
-    <label for="username" class="sr-only">Username</label>
-    <input type="text" name="username" class="form-control">
+<div class="signup-login-forms-component">
+  <div class="signup-login-forms">
+    <h1>Login.</h1>
+    <form class="signup-login-forms" action="/auth/login" method="POST">
+      <div>
+        {{!-- <label for="username" class="sr-only">Username</label> --}}
+        <input class="inputs" type="text" name="username" placeholder="Username">
+      </div>
+      <div>
+        {{!-- <label for="password" class="sr-only">Password</label> --}}
+        <input class="inputs" type="password" name="password" placeholder="Password">
+      </div>
 
-  </div>
-  <div class="form-group mx-sm-3 mb-2">
-    <label for="password" class="sr-only">Password</label>
-    <input type="password" name="password" class="form-control">
-  </div>
-
-    <button type="submit" class="btn btn-secondary">Login</button>
-</form>
-
-<div>
-    <form action="/auth/google" method="GET">
-        <button class="btn btn-primary mb-2">Login with Google 🌈</button>
+      <button class="signup-login-component normalButton" type="submit">Login</button>
     </form>
+
+    <form action="/auth/google" method="GET">
+            <button class="signup-login-component googleButton" ><span><img class="googleButtonImg" src="../images/gsignup.png" alt=""></span> Login with Google</button>
+    </form>
+  </div>
 </div>
+
+
+
+

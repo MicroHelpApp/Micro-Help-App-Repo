@@ -25,6 +25,7 @@ nav a {
 nav img {
   max-width: 10vw;
   height: auto;
+  margin-left: 60px
   
 }
 nav ul {
@@ -34,13 +35,49 @@ nav ul {
   font-size: 1.5rem;
   width: 35vw;
   list-style: none;
+  margin: 0px;
+  margin-right: 60px
 }
+
+nav ul li a {
+  font-size: 1.2vw;
+  margin: 10px;
+  font-weight: 500;
+  font-family: "Source Sans Pro";
+
+  
+}
+
+.signupPrimary {
+  background: rgb(255, 255, 255);
+  border-radius: 4px;
+  padding: 7px 16px 9px;
+  
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  line-height: 20px;
+  background-color:black;
+  color: white;
+  font-weight: 400;
+  border: 0px;
+  margin: 4px;
+
+}
+
+
+
 /* .mainPhrase h1{
   font-size: 15rem;
 } */
-section {
+.section1 {
   margin-top: 6vw;
+  margin-left: 60px;
 }
+
 .hey {
   font-size: 7rem;
   margin-bottom: 20px;
@@ -63,15 +100,76 @@ section {
 }
 
 .signup-login-forms {
+  margin-top: 10vh;
   display: flex;
-  justify-content: center;
   align-items: center;
   flex-direction: column;
+  justify-content: space-around;
 }
 
-.signup-login-normal {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+
+.signup-login-component {
+  width: 300px;
+  border-color: rgb(168, 168, 168);
+  background: rgb(255, 255, 255);
+  border-radius: 4px;
+  padding: 7px 16px 9px;
+  font-size: 14px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  line-height: 30px;
+  color: rgba(41, 41, 41, 1);
+  font-weight: 400;
+  margin: 5px;
 }
+
+
+
+.inputs {
+  font-size: 1rem;
+  font-family: "Source Sans Pro";
+  width: 300px;
+  border-color: rgb(168, 168, 168);
+  background: rgb(255, 255, 255);
+  border-radius: 4px;
+  padding: 7px 16px 9px;
+  text-align: left;
+  text-decoration: none;
+  display: inline-block;
+  box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  line-height: 30px;
+  color: rgba(41, 41, 41, 1);
+  font-weight: 400;
+  margin: 5px;
+}
+
+.normalButton{
+  font-size: 1rem;
+  font-family: "Source Sans Pro";
+  font-weight: 400;
+  background-color:black;
+  color: white;
+  border: 0px
+}
+
+.googleButton {
+  margin: 35px;
+  font-size: 1rem;
+  font-family: "Source Sans Pro";
+  font-weight: 400;
+}
+
+.googleButtonImg {
+ width: 20px
+}
+
+.signup-login-forms-component {
+  margin-top: 15vh;
+}
+

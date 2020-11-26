@@ -1,27 +1,23 @@
-<h1>Signup</h1>
 
-<div class="signup-login-forms">
+<div class="signup-login-forms-component">
 
-  <div class="signup-login-normal">
-    <form action="/auth/signup" method="POST" class="signup-login-normal">
+  <div class="signup-login-forms">
+    <h1>Signup.</h1>
+    <form class="signup-login-forms" action="/auth/signup" method="POST" >
     <div>
       {{!-- <label for="username">Username</label> --}}
-      <input type="text" name="username" placeholder="Username">
+      <input class="inputs" type="text" name="username" placeholder="Username">
     </div>
     <div>
       {{!-- <label for="password">Password</label> --}}
-      <input type="password" name="password" placeholder="Password">
+      <input class="inputs" type="password" name="password" placeholder="Password">
     </div>
-    <button>Sign up</button>
+    <button class="signup-login-component normalButton" >Sign up</button>
+  </form>
+
+  <form action="/auth/google" method="GET">
+          <button class="signup-login-component googleButton" ><span><img class="googleButtonImg" src="../images/gsignup.png" alt=""></span> Signup with Google</button>
   </form>
   </div>
-  
-
-  <div class="signup-login-normal">
-      <form action="/auth/google" method="GET">
-          <button>Signup with Google 🌈</button>
-      </form>
-  </div>
-
 </div>
 
