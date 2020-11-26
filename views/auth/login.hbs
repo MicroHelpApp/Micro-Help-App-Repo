@@ -19,7 +19,12 @@
             <button class="signup-login-component googleButton" ><span><img class="googleButtonImg" src="../images/gsignup.png" alt=""></span> Login with Google</button>
     </form>
   </div>
+
+  {{#if message}}
+    <p class="error-message" style="color: red;">{{message}}</p>
+  {{/if}}
 </div>
+
 
 
 

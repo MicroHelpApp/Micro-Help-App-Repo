@@ -24,6 +24,7 @@ router.get('/login', (req, res, next) => {
     })
  });
 
+
 router.post('/login', passport.authenticate('local', {
     successRedirect: '/private',
     failureRedirect: '/auth/login',
@@ -76,6 +77,25 @@ router.post('/signup', (req, res, next) => {
             }
           });
     }
+  });
+
+router.get('/google', passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] }));
+
+router.get('/google/callback', 
+  passport.authenticate('google', { 
+        successRedirect: '/private',
+        failureRedirect: '/'
+    })
+);
+
+  router.get('/logout', (req, res, next) => {
+    req.session.destroy(err => {
+      if (err) {
+        next(err);
+      } else {
+        res.redirect('/auth/login')
+      }
+    })
   });
 
 

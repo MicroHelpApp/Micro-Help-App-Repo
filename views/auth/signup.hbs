@@ -18,6 +18,14 @@
   <form action="/auth/google" method="GET">
           <button class="signup-login-component googleButton" ><span><img class="googleButtonImg" src="../images/gsignup.png" alt=""></span> Signup with Google</button>
   </form>
+
+  {{#if message}}
+    <p class="error-message">{{message}}</p>
+  {{/if}}
   </div>
+
+  
 </div>
+
+
 
