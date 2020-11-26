@@ -89,6 +89,7 @@ passport.deserializeUser((id, done) => {
     });
 });
 
+//normal signup/login
 passport.use(
   new LocalStrategy((username, password, done) => {
     User.findOne({ username: username })
@@ -106,6 +107,43 @@ passport.use(
       });
   })
 );
+
+//google signup/login
+const GoogleStrategy = require('passport-google-oauth2').Strategy;
+
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: process.env.GOOGLE_REDIRECT_URL 
+  },
+  function(accessToken, refreshToken, profile, done) {
+      console.log(profile)
+      User.findOne({googleId: profile.id})
+      .then( data => {
+          if (data !== null) {
+            console.log('google user found')
+            done(null, data);
+          } else {
+              console.log('new google user')
+              return User.create({
+                  googleId: profile.id,
+                  username: profile._json.name
+              })
+              .then( data => {
+                  done(null, data)
+              })
+
+          }
+      })
+      .catch(error => {
+        done(error);
+      })
+  }
+));
+
+
+
+
 
 app.use(passport.initialize());
 app.use(passport.session());
