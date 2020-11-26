@@ -29,10 +29,14 @@ router.get('/dashboard', middlewares.loginCheck, (req, res, next) => {
 
   router.get('/overview', middlewares.loginCheck, (req, res, next) => {
     // get all the sessions from the database
-    HelpSession.find({status: "Open"}).populate('student')
+    HelpSession.find({status: "Open"}).sort( { sessionStartDate : -1} )
+
+    .populate('student')
     .populate('teacher')
     .then((openSessions)=>{
-      HelpSession.find({status: "Done"}).populate('student')
+      HelpSession.find({status: "Done"}).sort( { sessionEndDate : -1} )
+      .limit(10)
+      .populate('student')
       .populate('teacher')
       .then(closedSessions => {
         User.find({type: 'teacherAssistant'})

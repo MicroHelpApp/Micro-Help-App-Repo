@@ -1,5 +1,6 @@
-
-<table class="table">
+<div id="ClosedTable">
+    <h2>Currently open help sessions</h1>
+<table class="table" id="OpenTable">
     <thead class="thead-dark">
         <tr>
             <th scope="col">Status</td>
@@ -49,8 +50,11 @@
         </tr>
     {{/each}}
     </tbody>
-</table>
-<table class="table">
+</table >
+</div>
+<div id="ClosedTable">
+<h3>Last 10 sessions that have been closed</h1>
+<table class="table" >
     <thead class="thead-dark">
         <tr>
             <th scope="col">Status</td>
@@ -101,4 +105,4 @@
     {{/each}}
     </tbody>
 </table>
-
+</div>
