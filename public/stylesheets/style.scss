@@ -183,7 +183,25 @@ nav ul li a {
   display: flex;
   flex-direction: row;
   max-width: 30vw;
-  justify-content: space-between; }
+  justify-content: space-between;
+  margin: 5%;
+ }
+ .series-container {
+  // max-width: 70vw;
+  margin: 20%;
+  align-items: center;
+  justify-content: center;
+  // border: solid 2px black;
+ }
+ .series-container canvas {
+  // margin: 30%;
+  // width: 10%;
+  // height: 10%;
+  // border: solid 2px red;
+}
+ .chart-container canvas {
+   margin: 5%;
+ }
 
 #ClosedTable {
   margin: 5%; }
