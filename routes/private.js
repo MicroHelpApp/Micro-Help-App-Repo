@@ -46,9 +46,19 @@ router.get('/dashboard', middlewares.loginCheck, (req, res, next) => {
     // get all the sessions from the database
     HelpSession.find().populate('student')
     .populate('teacher')
+    .then(sessions => { 
+      console.log(sessions)
+      res.json( {sessions})
+    }).catch(err => {
+      console.log(err);
+    })
+  });
+
+  router.get('/doneSessions', (req, res, next) => {
+    // get all the sessions from the database
+    HelpSession.find({status: 'Done'}).populate('student')
+    .populate('teacher')
     .then(sessions => {
-      // render a books view to display them
-      
       console.log(sessions)
       res.json( {sessions})
     }).catch(err => {

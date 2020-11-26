@@ -1,14 +1,19 @@
 
-<ul id="chart-commands">
-<li id="initialDisplay">Overview</li>
-<li>Special data</li>
+<ul class="nav justify-content-center" id="chart-commands">
+  <li class="nav-item" >
+    <a class="nav-link active" id="initialDisplay" onclick="renderAvgSessRating()">Average session rating</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" onclick="renderAvgSessRatingByTA()" >Average session rating per TA</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" onclick="renderAvgSessDuration()">Average lead time</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link">Test</a>
+  </li>
 </ul>
-{{#each sessionList}}
-<p>
-    <span>{{status}} {{sessionStartDate}}</span>
-    <span>Student: {{student.slackUserId}} Teacher: {{teacher.slackUserId}}</span>
-</p>
-{{/each}}
-<canvas id="myChart" width="200" height="200"></canvas>
-<script src="./javascripts/script.js">
+
+<canvas id="myChart" width="10" height="10"></canvas>
+<script src="/javascripts/script.js">
 </script>
