@@ -74,10 +74,10 @@ renderAvgSessRating = () => {
         .then(data => {
             let dataArr = []
             let sum = 0
-            for (let i = 0; i < data.sessions.length; i++){
-                    sum += data.sessions[i].sessionDuration
+            for (let i = 0; i < data.length; i++){
+                    sum += data[i].sessionDuration
                 }
-            let avg = sum/data.sessions.length
+            let avg = sum/data.length
             var ctx = document.getElementById('myChart3').getContext('2d');
             var myChart = new Chart(ctx, {
                 type: 'bar',
@@ -118,12 +118,14 @@ renderAvgSessRating = () => {
                 let taObj = {}
                 let names = []
                 let sessRating = []
-                for (let i = 0; i < data.sessions.length; i++){
-                    if (taObj[data.sessions[i].teacher.username]){
-                        taObj[data.sessions[i].teacher.username][0] += data.sessions[i].userRating
-                        taObj[data.sessions[i].teacher.username][1] += 1
+                console.log(data)
+
+                for (let i = 0; i < data.length; i++){
+                    if (taObj[data[i].teacher.username]){
+                        taObj[data[i].teacher.username][0] += data[i].userRating
+                        taObj[data[i].teacher.username][1] += 1
                       } else {
-                        taObj[data.sessions[i].teacher.username] = [data.sessions[i].userRating, 1]
+                        taObj[data[i].teacher.username] = [data[i].userRating, 1]
                       }
                     }
                     
@@ -180,16 +182,16 @@ renderTimeSeries = () => {
     fetch('/private/doneSessions')
     .then(res => res.json())
     .then(data => {
-        // console.log(data.sessions);
+        console.log(data);
         let taObj = {}
         let names = []
         let sessRating = []
-        for (let i = 0; i < data.sessions.length; i++){
-            if (taObj[data.sessions[i].sessionEndDate.slice(5,10)]){
-                taObj[data.sessions[i].sessionEndDate.slice(5,10)][0] += data.sessions[i].userRating
-                taObj[data.sessions[i].sessionEndDate.slice(5,10)][1] += 1
+        for (let i = 0; i < data.length; i++){
+            if (taObj[data[i].sessionEndDate.slice(5,10)]){
+                taObj[data[i].sessionEndDate.slice(5,10)][0] += data[i].userRating
+                taObj[data[i].sessionEndDate.slice(5,10)][1] += 1
                 } else {
-                taObj[data.sessions[i].sessionEndDate.slice(5,10)] = [data.sessions[i].userRating, 1]
+                taObj[data[i].sessionEndDate.slice(5,10)] = [data[i].userRating, 1]
                 }
             }
              

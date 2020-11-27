@@ -68,14 +68,19 @@ router.get('/dashboard', middlewares.loginCheck, (req, res, next) => {
 
   router.get('/doneSessions', (req, res, next) => {
     // get all the sessions from the database
-    HelpSession.find({status: 'Done'})
-    .sort({sessionEndDate: -1})
+    HelpSession.find(
+        {status: 'Done'}
+    )
+    .sort({sessionEndDate: 1})
     .limit(30)
     .populate('student')
     .populate('teacher')
     .then(sessions => {
-      console.log(sessions)
-      res.json( {sessions})
+     const filterValues = sessions.filter( sess => {
+        return sess.teacher != null && sess.userRating != null
+      })
+      // console.log(filterValues)
+      res.json(filterValues)
     }).catch(err => {
       console.log(err);
     })
