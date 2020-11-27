@@ -26,7 +26,7 @@ router.get('/login', (req, res, next) => {
 
 
 router.post('/login', passport.authenticate('local', {
-    successRedirect: '/private',
+    successRedirect: '/private/overview',
     failureRedirect: '/auth/login',
     passReqToCallback: true
 })
@@ -67,7 +67,7 @@ router.post('/signup', (req, res, next) => {
                     if (err) {
                       next(err);
                     } else {
-                      res.redirect('/private');
+                      res.redirect('/private/overview');
                     }
                   })
                 })
@@ -83,7 +83,7 @@ router.get('/google', passport.authenticate('google', { scope: ['https://www.goo
 
 router.get('/google/callback', 
   passport.authenticate('google', { 
-        successRedirect: '/private',
+        successRedirect: '/private/overview',
         failureRedirect: '/'
     })
 );
