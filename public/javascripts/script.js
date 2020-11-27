@@ -35,7 +35,9 @@ renderAvgSessRating = () => {
         for (let i = 0; i < data.sessions.length; i++){
                 sum += data.sessions[i].userRating
             }
+        console.log(data.sessions)
         let avg = sum/data.sessions.length
+        console.log(sum, avg)
         var ctx = document.getElementById('myChart').getContext('2d');
         var myChart = new Chart(ctx, {
             type: 'bar',
@@ -118,7 +120,7 @@ renderAvgSessRating = () => {
                 let taObj = {}
                 let names = []
                 let sessRating = []
-                console.log(data)
+                // console.log(data)
 
                 for (let i = 0; i < data.length; i++){
                     if (taObj[data[i].teacher.username]){
@@ -182,7 +184,7 @@ renderTimeSeries = () => {
     fetch('/private/doneSessions')
     .then(res => res.json())
     .then(data => {
-        console.log(data);
+        // console.log(data);
         let taObj = {}
         let names = []
         let sessRating = []
