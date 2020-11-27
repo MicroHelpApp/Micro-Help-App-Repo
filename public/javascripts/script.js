@@ -27,16 +27,16 @@ test = () => {
 // this displays the charts
 renderAvgSessRating = () => {
 
-    fetch('/private/sessions')
+    fetch('/private/doneSessions')
     .then(res => res.json())
     .then(data => {
         let dataArr = []
         let sum = 0
-        for (let i = 0; i < data.sessions.length; i++){
-                sum += data.sessions[i].userRating
+        for (let i = 0; i < data.length; i++){
+                sum += data[i].userRating
             }
-        console.log(data.sessions)
-        let avg = sum/data.sessions.length
+        console.log(data)
+        let avg = sum/data.length
         console.log(sum, avg)
         var ctx = document.getElementById('myChart').getContext('2d');
         var myChart = new Chart(ctx, {
